@@ -10,3 +10,9 @@ class SpaceRepository():
         spaces = [Space(space['id'], space['name'], space['address'], space['description'],
                         space['price'], space['dates_booked'], space['owner_id']) for space in rows]
         return spaces
+
+    def find(self, space_id):
+        space = self._connection.execute('SELECT * FROM spaces WHERE id = %s', [space_id])[0]
+        return Space(space['id'], space['name'], space['address'], space['description'],
+                        space['price'], space['dates_booked'], space['owner_id'])
+        

@@ -16,4 +16,13 @@ def test_get_all_spaces(db_connection):
         Space(4, 'Small House','5 street','Peterborough',00.00,'[]', 3)
     ]
 
+'''
+Testing SpaceRepository #find
+returns specific space
+'''
+def test_find_specific_space(db_connection):
+    db_connection.seed('seeds/spaces.sql')
+    repository = SpaceRepository(db_connection)
+    result = repository.find(2)
+    assert result == Space(2, 'Big House','11 Example Street','Vibrant neighbourhood',200,'[2024-10-14, 2024-10-15, 2024-10-16, 2024-10-17]', 1)
 
