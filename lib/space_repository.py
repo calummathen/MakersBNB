@@ -17,4 +17,9 @@ class SpaceRepository():
                         space['price'], space['dates_booked'], space['owner_id'])
     
     def create(self, new_space):
-        self._connection.execute('INSERT INTO spaces (name,address,description,price,dates_booked,owner_id) VALUES (%s,%s,%s,%s,%s,%s)',['Igloo','23 Example Street','Cold neighbourhood',100.00,'[2024-10-15, 2024-10-16, 2024-10-17]', 3])
+        self._connection.execute('INSERT INTO spaces (name,address,description,price,dates_booked,owner_id) VALUES (%s,%s,%s,%s,%s,%s)',
+                                [new_space.name, new_space.address, new_space.description, new_space.price, new_space.dates_booked, new_space.owner_id])
+    
+    def update(self,new_space):
+        self._connection.execute('UPDATE spaces SET name=%s,address=%s,description=%s,price=%s,dates_booked=%s WHERE id = %s' ,
+                                [new_space.name, new_space.address, new_space.description, new_space.price, new_space.dates_booked, new_space.id])
