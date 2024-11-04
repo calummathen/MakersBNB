@@ -23,3 +23,7 @@ class SpaceRepository():
     def update(self,new_space):
         self._connection.execute('UPDATE spaces SET name=%s,address=%s,description=%s,price=%s,dates_booked=%s WHERE id = %s' ,
                                 [new_space.name, new_space.address, new_space.description, new_space.price, new_space.dates_booked, new_space.id])
+        
+    def delete(self,space_id):
+        self._connection.execute('DELETE FROM spaces WHERE id = %s',[space_id])
+        
