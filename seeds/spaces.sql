@@ -8,7 +8,7 @@ CREATE TABLE spaces(
     name VARCHAR(30),
     address VARCHAR(255),
     description VARCHAR(255),
-    price DECIMAL,
+    price FLOAT,
     dates_booked VARCHAR(255),
     owner_id INTEGER
 );
