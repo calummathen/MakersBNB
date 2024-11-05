@@ -141,3 +141,10 @@ def test_delete_booking(db_connection):
     assert booking == None
     
     
+def test_approved(db_connection):
+    db_connection.seed("seeds/spaces.sql")
+    db_connection.seed("seeds/bookings.sql")
+    repository = BookingRepository(db_connection)
+    repository.approved(3)
+    booking = repository.find_booking(3)
+    assert booking.approved == True

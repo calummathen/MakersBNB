@@ -53,3 +53,7 @@ class BookingRepository():
     
     def delete_booking(self, id):
         self.__connection.execute("DELETE FROM bookings WHERE id = %s", [id])
+        
+        
+    def approved(self, id):
+        self.__connection.execute("UPDATE bookings SET approved = TRUE WHERE id = %s", [id])
