@@ -5,10 +5,15 @@ from lib.space_repository import SpaceRepository
 from lib.space import Space
 from lib.user import User
 from lib.user_repository import UserRepository
+import os
+from dotenv import load_dotenv
 
 # Create a new Flask app
 app = Flask(__name__)
-app.secret_key = 'sample_key'
+
+load_dotenv()
+app.secret_key = os.getenv('SECRET_KEY')
+print(os.getenv('SECRET_KEY'))
 
 # == Your Routes Here ==
 
