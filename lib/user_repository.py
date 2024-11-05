@@ -11,8 +11,7 @@ class UserRepository:
         if len(attempted_user) == 0:
             return False
         user = attempted_user[0]
-        correct_password = user['password'] == password
-        # correct_password = check_password_hash(user['password'], password)
+        correct_password = check_password_hash(user['password'], password)
         if correct_password == False:
             return False
         return {'id': user['id'], 'username': user['username']}
@@ -32,15 +31,16 @@ class UserRepository:
         return user
 
     def create_user(self, user_to_add):
-        # hashed_password = generate_password_hash(user_to_add.password)
+        hashed_password = generate_password_hash(user_to_add.password)
         self._connection.execute("INSERT INTO users (username, name, password, email, phone_number) VALUES(%s, %s, %s, %s, %s)", 
-        [user_to_add.username, user_to_add.name, user_to_add.password, user_to_add.email, user_to_add.phone_number]
+        [user_to_add.username, user_to_add.name, hashed_password, user_to_add.email, user_to_add.phone_number]
         )
        
         
     def update_user(self, user_to_update):
+        hashed_password = generate_password_hash(user_to_update.password)
         self._connection.execute("UPDATE users SET username=%s, name=%s, password=%s, email=%s, phone_number=%s WHERE id = %s", 
-        [user_to_update.username, user_to_update.name, user_to_update.password, user_to_update.email, user_to_update.phone_number, user_to_update.id])
+        [user_to_update.username, user_to_update.name, hashed_password, user_to_update.email, user_to_update.phone_number, user_to_update.id])
         
     def delete_user(self, id):
         self._connection.execute("DELETE FROM users WHERE id = %s", [id])
