@@ -148,3 +148,65 @@ def test_approved(db_connection):
     repository.approved(3)
     booking = repository.find_booking(3)
     assert booking.approved == True
+    
+    
+def test_is_valid_booking_where_existing_booking_has_same_dates_for_space_1(db_connection):
+    db_connection.seed("seeds/spaces.sql")
+    db_connection.seed("seeds/bookings.sql")
+    repository = BookingRepository(db_connection)
+    potential_booking = Booking(None, datetime.strptime('2024-12-01', '%Y-%m-%d').date(), datetime.strptime('2024-12-08', '%Y-%m-%d').date(), 1, 1, True)
+    is_valid_booking = repository.is_valid_booking(potential_booking)
+    assert is_valid_booking == False
+    
+def test_is_valid_booking_where_check_out_is_in_existing_booking_for_space_1(db_connection):
+    db_connection.seed("seeds/spaces.sql")
+    db_connection.seed("seeds/bookings.sql")
+    repository = BookingRepository(db_connection)
+    potential_booking = Booking(None, datetime.strptime('2024-12-06', '%Y-%m-%d').date(), datetime.strptime('2024-12-11', '%Y-%m-%d').date(), 1, 1, True)
+    is_valid_booking = repository.is_valid_booking(potential_booking)
+    assert is_valid_booking == False
+    
+def test_is_valid_booking_where_existing_booking_within_for_space_1(db_connection):
+    db_connection.seed("seeds/spaces.sql")
+    db_connection.seed("seeds/bookings.sql")
+    repository = BookingRepository(db_connection)
+    potential_booking = Booking(None, datetime.strptime('2024-12-06', '%Y-%m-%d').date(), datetime.strptime('2024-12-13', '%Y-%m-%d').date(), 1, 1, True)
+    is_valid_booking = repository.is_valid_booking(potential_booking)
+    assert is_valid_booking == False
+    
+    
+def test_is_valid_booking_where_check_in_is_in_existing_booking_for_space_1(db_connection):
+    db_connection.seed("seeds/spaces.sql")
+    db_connection.seed("seeds/bookings.sql")
+    repository = BookingRepository(db_connection)
+    potential_booking = Booking(None, datetime.strptime('2024-12-08', '%Y-%m-%d').date(), datetime.strptime('2024-12-13', '%Y-%m-%d').date(), 1, 1, True)
+    is_valid_booking = repository.is_valid_booking(potential_booking)
+    assert is_valid_booking == False
+    
+    
+def test_is_valid_booking_where_two_existing_bookings_exist_within_booking_for_space_1(db_connection):
+    db_connection.seed("seeds/spaces.sql")
+    db_connection.seed("seeds/bookings.sql")
+    repository = BookingRepository(db_connection)
+    potential_booking = Booking(None, datetime.strptime('2024-12-07', '%Y-%m-%d').date(), datetime.strptime('2024-12-20', '%Y-%m-%d').date(), 1, 1, True)
+    is_valid_booking = repository.is_valid_booking(potential_booking)
+    assert is_valid_booking == False
+    
+    
+def test_is_valid_booking_for_available_date_for_space_1(db_connection):
+    db_connection.seed("seeds/spaces.sql")
+    db_connection.seed("seeds/bookings.sql")
+    repository = BookingRepository(db_connection)
+    potential_booking = Booking(None, datetime.strptime('2024-12-12', '%Y-%m-%d').date(), datetime.strptime('2024-12-16', '%Y-%m-%d').date(), 1, 1, True)
+    is_valid_booking = repository.is_valid_booking(potential_booking)
+    assert is_valid_booking == True
+    
+def test_is_valid_booking_for_available_date_for_space_2(db_connection):
+    db_connection.seed("seeds/spaces.sql")
+    db_connection.seed("seeds/bookings.sql")
+    repository = BookingRepository(db_connection)
+    potential_booking = Booking(None, datetime.strptime('2024-12-01', '%Y-%m-%d').date(), datetime.strptime('2024-12-20', '%Y-%m-%d').date(), 1, 2, True)
+    is_valid_booking = repository.is_valid_booking(potential_booking)
+    assert is_valid_booking == True
+    
+    

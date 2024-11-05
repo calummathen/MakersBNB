@@ -57,3 +57,15 @@ class BookingRepository():
         
     def approved(self, id):
         self.__connection.execute("UPDATE bookings SET approved = TRUE WHERE id = %s", [id])
+        
+        
+    def is_valid_booking(self, new_booking):
+        # this code is extremely hard to understand, trust us, it works
+        # if the booking you want to make conflicts with an existing booking, method returns false, its not valid
+        booking_list = self.find_booking_for_space(new_booking.space_id)
+        for booking in booking_list:
+            if booking.check_in < new_booking.check_out and booking.check_out > new_booking.check_in:
+                return False
+        return True
+
+
