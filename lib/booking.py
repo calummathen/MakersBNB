@@ -1,5 +1,5 @@
 class Booking():
-    def __init__(self, booking_id, check_in, check_out, user_id, space_id, approved):
+    def __init__(self, booking_id, check_in, check_out, user_id, space_id, approved=False):
         self.booking_id = booking_id
         self.check_in = check_in
         self.check_out = check_out

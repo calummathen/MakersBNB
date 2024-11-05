@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS bookings;
+DROP TABLE IF EXISTS bookings CASCADE;
 DROP SEQUENCE IF EXISTS bookings_id_seq;
 
 
