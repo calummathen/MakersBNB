@@ -23,6 +23,12 @@ body {
     flex-direction: column;
 }
 
+.signup-field {
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+}
+
 .list-button {
     display: flex;
     align-items: center;
@@ -32,3 +38,4 @@ body {
 .list-button button:hover{
     cursor: pointer;
 }
+

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>MakersBnB</title>
+
+        <!--
+            Head to https://github.com/makersacademy/web-applications-in-python/blob/main/pills/loading_css_or_static_files.md
+            If you're wondering how the CSS file below is being loaded.
+        -->
+        <link rel="stylesheet" href="/static/style.css" >
+    </head>
+    <body>
+        <h1>Book a Space</h1>
+        <p class="blessing">Website made possible thanks to our glorious leader Calum<br/>ALL HAIL CALUM</p>
+        <form action="/new_space">
+            <button>List a Space</button>
+        </form>
+        <div class="filter">
+            <div class="dates">
+                <label>Available from (DD/MM/YY)</label>
+                <input />
+            </div>
+            <div class="dates">
+                <label>Available to (DD/MM/YY)</label>
+                <input />
+            </div>
+            <form class="list-button">
+                <button>List Spaces</button>
+            </form>
+        </div> 
+
+        <div>
+            <p>{{name}}</p>
+        </div>
+
+    </body>
+</html>

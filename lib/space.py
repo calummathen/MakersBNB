@@ -10,7 +10,7 @@ class Space:
         self.owner_id = owner_id
 
     def __repr__(self):
-        return f"Space({self.id}, {self.name}, {self.address}, {self.description}, {f"{self.price:.2f}"}, {self.dates_booked}, {self.owner_id})"
+        return f"Space({self.id}, {self.name}, {self.address}, {self.description}, {self.price:.2f}, {self.dates_booked}, {self.owner_id})"
     
     def __eq__(self, other):
         return self.__dict__ == other.__dict__
