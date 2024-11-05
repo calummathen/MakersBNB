@@ -5,6 +5,7 @@ from lib.space_repository import SpaceRepository
 from lib.space import Space
 from lib.user import User
 from lib.user_repository import UserRepository
+from validation_methods import *
 
 # Create a new Flask app
 app = Flask(__name__)
