@@ -5,6 +5,30 @@ def test_initialise_user_repository(db_connection):
     db_connection.seed("seeds/user.sql")
     repository = UserRepository(db_connection)
     assert isinstance(repository, UserRepository)
+
+def test_login_correct_login(db_connection):
+    db_connection.seed("seeds/user.sql")
+    repository = UserRepository(db_connection)
+    user = repository.login('username_1', 'password_1')
+    assert user == {'id': 1, 'username': 'username_1'}
+
+def test_login_incorrect_username(db_connection):
+    db_connection.seed("seeds/user.sql")
+    repository = UserRepository(db_connection)
+    user = repository.login('username_5', 'password_1')
+    assert user == 'Incorrect username or password'
+
+def test_login_incorrect_password(db_connection):
+    db_connection.seed("seeds/user.sql")
+    repository = UserRepository(db_connection)
+    user = repository.login('username_1', 'password_5')
+    assert user == 'Incorrect username or password'
+
+def test_login_incorrect_username_and_password(db_connection):
+    db_connection.seed("seeds/user.sql")
+    repository = UserRepository(db_connection)
+    user = repository.login('username_5', 'password_10')
+    assert user == 'Incorrect username or password'
     
 def test_find_user_with_id_1(db_connection):
     db_connection.seed("seeds/user.sql")
