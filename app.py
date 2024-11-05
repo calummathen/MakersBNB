@@ -77,7 +77,14 @@ def get_test_route():
 @app.route('/create_user', methods=['POST'])
 def create_user():
     name = request.form.get('name')
-    return render_template('temp_test.html',name=name)
+    email = request.form.get('email')
+    phone_number = request.form.get('phone_number')
+    username = request.form.get('username')
+    password = request.form.get('password')
+    connection = get_flask_database_connection(app)
+    repository = UserRepository(connection)
+    repository.create_user(User(None, username, name, password, email, phone_number))
+    return str(repository.find_user(3))
 
 # These lines start the server if you run this file directly
 # They also start the server configured to use the test database
