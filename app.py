@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, render_template, session
+from flask import Flask, request, render_template, session, redirect, url_for
 from lib.database_connection import get_flask_database_connection
 from lib.space_repository import SpaceRepository
 from lib.space import Space
@@ -26,10 +26,13 @@ def get_root():
 
 @app.route('/index', methods=['GET'])
 def get_index():
+    logged_in = protect_route()
+    if logged_in:
+        return logged_in
+    
     connection = get_flask_database_connection(app)
     repository = SpaceRepository(connection)
     spaces = repository.all()
-    print(spaces)
     return render_template('home.html', spaces=spaces)
 
 # Route for Signing up
@@ -81,6 +84,11 @@ def get_test_route():
 def create_user():
     name = request.form.get('name')
     return render_template('temp_test.html',name=name)
+
+def protect_route():
+    if not session.get('id'):
+        return redirect(url_for('get_root'))
+    return None
 
 # These lines start the server if you run this file directly
 # They also start the server configured to use the test database
