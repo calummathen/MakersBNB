@@ -13,6 +13,11 @@ app = Flask(__name__)
 # Returns the homepage
 # Try it:
 #   ; open http://localhost:5001/index
+@app.route('/signup', methods=['GET'])
+def get_root():
+    connection = get_flask_database_connection(app)
+    return render_template('signup.html')
+
 @app.route('/index', methods=['GET'])
 def get_index():
     connection = get_flask_database_connection(app)
@@ -23,8 +28,12 @@ def get_index():
 
 @app.route('/new_space', methods=['GET'])
 def get_test_route():
-    
     return render_template('space_form.html')
+
+@app.route('/create_user', methods=['POST'])
+def create_user():
+    name = request.form.get('name')
+    return render_template('temp_test.html',name=name)
 
 # These lines start the server if you run this file directly
 # They also start the server configured to use the test database
