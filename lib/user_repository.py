@@ -39,8 +39,8 @@ class UserRepository:
        
         
     def update_user(self, user_to_update):
-        self._connection.execute("UPDATE users SET username=%s, name=%s, password=%s, email=%s, phone_number=%s", 
-        [user_to_update.username, user_to_update.name, user_to_update.password, user_to_update.email, user_to_update.phone_number])
+        self._connection.execute("UPDATE users SET username=%s, name=%s, password=%s, email=%s, phone_number=%s WHERE id = %s", 
+        [user_to_update.username, user_to_update.name, user_to_update.password, user_to_update.email, user_to_update.phone_number, user_to_update.id])
         
     def delete_user(self, id):
         self._connection.execute("DELETE FROM users WHERE id = %s", [id])

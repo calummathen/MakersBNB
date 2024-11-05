@@ -45,16 +45,16 @@ def test_find_user_with_id_2(db_connection):
 def test_add_user(db_connection):
     db_connection.seed("seeds/spaces.sql")
     repository = UserRepository(db_connection)
-    user_to_add = User(None, 'username_3', 'name_3', 'password_3', 'email_3@gmail.com', '07777333333')
+    user_to_add = User(None, 'username_4', 'name_4', 'password_4', 'email_4@gmail.com', '07777444444')
     repository.create_user(user_to_add)
-    assert repository.find_user(3) == User(3, 'username_3', 'name_3', 'password_3', 'email_3@gmail.com', '07777333333')
+    assert repository.find_user(4) == User(4, 'username_4', 'name_4', 'password_4', 'email_4@gmail.com', '07777444444')
     
 def test_update_user(db_connection):
     db_connection.seed("seeds/spaces.sql")
     repository = UserRepository(db_connection)
-    user_to_update = User(1, 'username_4', 'name_4', 'password_4', 'email_4@gmail.com', '07777444444')
+    user_to_update = User(1, 'wow_this_unique', 'name_6', 'password_6', 'email_6@gmail.com', '07777666666')
     repository.update_user(user_to_update)
-    assert repository.find_user(1) == User(1, 'username_4', 'name_4', 'password_4', 'email_4@gmail.com', '07777444444')
+    assert repository.find_user(1) == User(1, 'wow_this_unique', 'name_6', 'password_6', 'email_6@gmail.com', '07777666666')
     
 def test_delete_user(db_connection):
     db_connection.seed("seeds/spaces.sql")
