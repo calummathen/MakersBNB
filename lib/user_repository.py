@@ -9,12 +9,12 @@ class UserRepository:
     def login(self, username, password):
         attempted_user = self._connection.execute('SELECT * FROM users WHERE username = %s', [username])
         if len(attempted_user) == 0:
-            return 'Incorrect username or password'
+            return False
         user = attempted_user[0]
         correct_password = user['password'] == password
         # correct_password = check_password_hash(user['password'], password)
         if correct_password == False:
-            return 'Incorrect username or password'
+            return False
         return {'id': user['id'], 'username': user['username']}
         
     def find_user(self, id):
