@@ -39,3 +39,11 @@ body {
     cursor: pointer;
 }
 
+.space-listing{
+    background-color:#f2f2f2;
+    padding-top: 0.3em;
+    padding-right: 0.8em;
+    padding-bottom: 0.3em;
+    padding-left: 0.8em;
+    margin-bottom:1em;
+}
