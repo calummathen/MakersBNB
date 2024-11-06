@@ -36,6 +36,15 @@ def get_index():
     spaces = repository.all()
     return render_template('home.html', spaces=spaces)
 
+@app.route('/profile')
+def profile():
+    connection = get_flask_database_connection(app)
+    repository = UserRepository(connection)
+    id = session['id']
+    user = repository.find_with_space(id)
+    
+    
+
 from authentication_routes import auth_routes
 auth_routes(app)
 
