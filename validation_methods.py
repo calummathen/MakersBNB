@@ -9,7 +9,9 @@ def check_there_are_no_spaces(entry):
         return True
     
 def check_name_is_valid(entry):
-    if len(entry) > 0 and len(entry)<= 30 and entry != " " and check_string_not_empty(entry):
+    if len(entry) > 0 and len(entry) <= 30 and entry != " " and check_string_not_empty(entry):
+        if any(char.isdigit() for char in entry):
+            return "Name must not contain numbers."
         return True
     else:
         return "Name must be 1-30 characters and not empty."
@@ -18,7 +20,7 @@ def check_username_is_valid(entry):
     if len(entry) > 2 and len(entry)<= 17 and check_string_not_empty(entry) and check_there_are_no_spaces(entry):
         return True
     else:
-        return "Username mus be 2-17 characters long with no spaces."
+        return "Username must be 2-17 characters long with no spaces."
 
 def check_password_is_valid(entry):
     has_letter = any(char.isalpha() for char in entry)
