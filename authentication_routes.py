@@ -2,23 +2,24 @@ from lib.database_connection import get_flask_database_connection
 from flask import request, render_template, session
 from lib.user import User
 from lib.user_repository import UserRepository
+from validation_methods import check_email_is_valid, check_signup_valid
 
 def auth_routes(app):
-    # Route for Signing up
     @app.route('/signup', methods=['POST'])
     def sign_up():
-        connection = get_flask_database_connection(app)
-        repository = UserRepository(connection)
-        id = request.form["id"]
-        username = request.form["username"]
-        name = request.form["name"]
-        password = request.form["password"]
-        email = request.form["email"]
-        phone_number = request.form["phone_number"]
-        # Will need a check for a unique user
-        new_user = User(id, username, name, password, email, phone_number)
-        repository.create_user(new_user)
-        return render_template('login.html')
+        name = request.form.get('name')
+        email = request.form.get('email')
+        phone_number = request.form.get('phone_number')
+        username = request.form.get('username')
+        password = request.form.get('password')
+        errors = [error for error in check_signup_valid(name, email, phone_number, username, password) if error != True]
+        if len(errors) != 0:
+            return render_template('signup.html', errors=errors)
+        else:
+            connection = get_flask_database_connection(app)
+            repository = UserRepository(connection)
+            repository.create_user(User(None, username, name, password, email, phone_number))
+            return render_template('login.html')
 
     @app.route('/login', methods=['POST'])
     def login():
