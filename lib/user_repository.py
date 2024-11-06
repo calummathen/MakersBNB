@@ -43,3 +43,7 @@ class UserRepository:
         
     def delete_user(self, id):
         self._connection.execute("DELETE FROM users WHERE id = %s", [id])
+
+    def get_usernames_emails(self):
+        result = self._connection.execute("SELECT username,email FROM users")
+        return result

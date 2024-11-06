@@ -11,6 +11,7 @@ from validation_methods import check_signup_valid
 from dotenv import load_dotenv
 from datetime import date
 import json
+from helper_functions import protect_route
 
 
 # Create a new Flask app
@@ -25,12 +26,15 @@ app.secret_key = os.getenv('SECRET_KEY')
 # Returns the homepage
 # Try it:
 #   ; open http://localhost:5001/index
+@app.route('/', methods=['GET'])
+def get_login_page():
+    return render_template('login.html')
+
 @app.route('/signup', methods=['GET'])
 def get_root():
-    connection = get_flask_database_connection(app)
     return render_template('signup.html',errors=[])
 
-@app.route('/index', methods=['GET'])
+@app.route('/home', methods=['GET'])
 def get_index():
     logged_in = protect_route()
     if logged_in:
@@ -93,14 +97,13 @@ def login():
     if 'username' not in session:
         session['id'] = user['id']
         session['username'] = user['username']
-    return user
+    # return user
+    return redirect('/home', code=200)
 
 @app.route('/logout')
 def logout():
     session.clear()
     return 'hello world'
-
-    
 
 @app.route('/new_space', methods=['GET'])
 def get_test_route():
@@ -121,16 +124,14 @@ def create_user():
         connection = get_flask_database_connection(app)
         repository = UserRepository(connection)
         repository.create_user(User(None, username, name, password, email, phone_number))
-        return f'{str(repository.find_user(3))} \n SHOULD RETURN TO login.html - this is temporary'
-        # return render_template('login.html')
+        # return f'{str(repository.find_user(3))} \n SHOULD RETURN TO login.html - this is temporary'
+        return render_template('login.html',account_created=True)
 
-def protect_route():
-    if not session.get('id'):
-        return redirect(url_for('get_root'))
-    return None
+
 
 # These lines start the server if you run this file directly
 # They also start the server configured to use the test database
 # if started in test mode.
 if __name__ == '__main__':
     app.run(debug=True, port=int(os.environ.get('PORT', 5001)))
+
