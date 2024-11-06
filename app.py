@@ -5,7 +5,9 @@ from lib.space_repository import SpaceRepository
 from lib.space import Space
 from lib.user import User
 from lib.user_repository import UserRepository
+from validation_methods import check_signup_valid
 from dotenv import load_dotenv
+
 
 # Create a new Flask app
 app = Flask(__name__)
@@ -22,7 +24,7 @@ app.secret_key = os.getenv('SECRET_KEY')
 @app.route('/signup', methods=['GET'])
 def get_root():
     connection = get_flask_database_connection(app)
-    return render_template('signup.html')
+    return render_template('signup.html',errors=[])
 
 @app.route('/index', methods=['GET'])
 def get_index():
@@ -36,6 +38,8 @@ def get_index():
     return render_template('home.html', spaces=spaces)
 
 # Route for Signing up
+# Commented out as don't believe it is needed anymore, but want to check:
+'''
 @app.route('/signup', methods=['POST'])
 def sign_up():
     connection = get_flask_database_connection(app)
@@ -50,6 +54,7 @@ def sign_up():
     new_user = User(id, username, name, password, email, phone_number)
     repository.create_user(new_user)
     return render_template('login.html')
+'''
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -82,8 +87,21 @@ def get_test_route():
 
 @app.route('/create_user', methods=['POST'])
 def create_user():
-    name = request.form.get('name')
-    return render_template('temp_test.html',name=name)
+    name = str(request.form.get('name'))
+    print(name)
+    email = str(request.form.get('email'))
+    phone_number = str(request.form.get('phone_number'))
+    username = str(request.form.get('username'))
+    password = str(request.form.get('password'))
+    errors = [error for error in check_signup_valid(name, email, phone_number, username, password) if error != True]
+    if len(errors) != 0:
+        return render_template('signup.html', errors=errors)
+    else:
+        connection = get_flask_database_connection(app)
+        repository = UserRepository(connection)
+        repository.create_user(User(None, username, name, password, email, phone_number))
+        return f'{str(repository.find_user(3))} \n SHOULD RETURN TO login.html - this is temporary'
+        # return render_template('login.html')
 
 def protect_route():
     if not session.get('id'):

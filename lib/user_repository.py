@@ -35,7 +35,6 @@ class UserRepository:
         self._connection.execute("INSERT INTO users (username, name, password, email, phone_number) VALUES(%s, %s, %s, %s, %s)", 
         [user_to_add.username, user_to_add.name, hashed_password, user_to_add.email, user_to_add.phone_number]
         )
-       
         
     def update_user(self, user_to_update):
         hashed_password = generate_password_hash(user_to_update.password)
