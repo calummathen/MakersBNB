@@ -32,10 +32,9 @@ def auth_routes(app):
             error = 'Incorrect Username or Password'
             return error
             # return render_template('login.html', error=error)
-        if 'username' not in session:
+        if 'username' not in session or 'username' in session != username:
             session['id'] = user['id']
             session['username'] = user['username']
-        # return user
         return redirect('/home', code=200)
 
     @app.route('/logout')

@@ -7,12 +7,12 @@
 </head>
 <body>
     <!-- Maybe have the username here -->
-    <h2>{{user_information.username}}'s Profile</h2>
+    <h2>{{username}}'s Profile</h2>
     <!-- My properties Information -->
     <side>
         <h4>My Properties</h4>
         <div>
-            {% for space in user_information.spaces %}
+            {% for space in owner.spaces %}
             <div>
                 {{space.name}}
             </div>
@@ -22,8 +22,8 @@
     </side>
     <!-- My Bookings / Bookings for my property -->
     <main>
-        <h4>My Bookings</h4>
-        {% for space in user_information.spaces %}
+        <h4>Bookings for my property</h4>
+        {% for space in owner.spaces %}
         <div>
             <h5>
                 {{space.name}}
@@ -31,7 +31,25 @@
             {% for booking in space.bookings %}
             <div>
                 {{booking.check_in}}
+                <br />
                 {{booking.check_out}}
+                <hr />
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+        <h4>My Bookings</h4>
+        {% for space in guest.spaces %}
+        <div>
+            <h5>
+                {{space.name}}
+            </h5>
+            {% for booking in space.bookings %}
+            <div>
+                {{booking.check_in}}
+                <br />
+                {{booking.check_out}}
+                <hr />
             </div>
             {% endfor %}
         </div>
@@ -41,10 +59,12 @@
     <side>
         <h4>My Details</h4>
         <div>
-            <p>Name: {{user_information.name}}</p>
-            <p>Email: {{user_information.email}}</p>
-            <p>Phone Number: {{user_information.phone_number}}</p>
-            <button>Edit Details</button>
+            <p>Name: {{owner.name}}</p>
+            <p>Email: {{owner.email}}</p>
+            <p>Phone Number: {{owner.phone_number}}</p>
+            <form action="/profile/edit">
+                <button>Edit Details</button>
+            </form>
         </div>
     </side>
 

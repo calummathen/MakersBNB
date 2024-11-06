@@ -87,10 +87,10 @@ def test_delete_user(db_connection):
     user = repository.find_user(2)
     assert user == None
 
-def test_search_for_everything_1(db_connection):
+def test_search_for_everything_as_owner_1(db_connection):
     db_connection.seed("seeds/spaces.sql")
     repository = UserRepository(db_connection)
-    user = repository.find_all_information(1)
+    user = repository.find_all_information_as_owner(1)
     assert user == User(1, 'username_1', 'name_1', None, 'email_1@gmail.com', '07777111111', [
         Space(1, 'Stratfest', 'Wembley', 'Company event space', 1000.50, '[2024-09-14, 2024-09-15, 2024-09-16]', 1, [
             Booking(1, datetime.strptime('2024-12-01', '%Y-%m-%d').date(), datetime.strptime('2024-12-07', '%Y-%m-%d').date(), 1, 1, 1, True),
@@ -102,11 +102,21 @@ def test_search_for_everything_1(db_connection):
         Space(2, 'Big House','11 Example Street','Vibrant neighbourhood',200,'[2024-10-14, 2024-10-15, 2024-10-16, 2024-10-17]', 1, [
             Booking(6, datetime.strptime('2024-12-26', '%Y-%m-%d').date(), datetime.strptime('2025-01-01', '%Y-%m-%d').date(), 2, 2, 1, True)
         ])
-    ], [
-        Booking(1, datetime.strptime('2024-12-01', '%Y-%m-%d').date(), datetime.strptime('2024-12-07', '%Y-%m-%d').date(), 1, 1, 1, True),
-        # Booking(2, datetime.strptime('2024-12-07', '%Y-%m-%d').date(), datetime.strptime('2024-12-12', '%Y-%m-%d').date(), 2, 1, 1, True),
-        Booking(3, datetime.strptime('2024-12-16', '%Y-%m-%d').date(), datetime.strptime('2024-12-20', '%Y-%m-%d').date(), 1, 1, 1, False),
-        # Booking(4, datetime.strptime('2024-12-22', '%Y-%m-%d').date(), datetime.strptime('2024-12-23', '%Y-%m-%d').date(), 2, 1, 1, True),
-        Booking(5, datetime.strptime('2024-12-26', '%Y-%m-%d').date(), datetime.strptime('2025-01-01', '%Y-%m-%d').date(), 1, 1, 1, False),
-        # Booking(6, datetime.strptime('2024-12-26', '%Y-%m-%d').date(), datetime.strptime('2025-01-01', '%Y-%m-%d').date(), 2, 2, 1, True)
-    ])
+    ], [])
+
+def test_search_for_everything_as_guest_2(db_connection):
+    db_connection.seed("seeds/spaces.sql")
+    repository = UserRepository(db_connection)
+    user = repository.find_all_information_as_guest(2)
+    assert user == User(2, 'username_2', 'name_2', None, 'email_2@gmail.com', '07777222222', [
+        Space(1, 'Stratfest', 'Wembley', 'Company event space', 1000.50, '[2024-09-14, 2024-09-15, 2024-09-16]', 1, [
+            # Booking(1, datetime.strptime('2024-12-01', '%Y-%m-%d').date(), datetime.strptime('2024-12-07', '%Y-%m-%d').date(), 1, 1, 1, True),
+            Booking(2, datetime.strptime('2024-12-07', '%Y-%m-%d').date(), datetime.strptime('2024-12-12', '%Y-%m-%d').date(), 2, 1, 1, True),
+            # Booking(3, datetime.strptime('2024-12-16', '%Y-%m-%d').date(), datetime.strptime('2024-12-20', '%Y-%m-%d').date(), 1, 1, 1, False),
+            Booking(4, datetime.strptime('2024-12-22', '%Y-%m-%d').date(), datetime.strptime('2024-12-23', '%Y-%m-%d').date(), 2, 1, 1, True),
+            # Booking(5, datetime.strptime('2024-12-26', '%Y-%m-%d').date(), datetime.strptime('2025-01-01', '%Y-%m-%d').date(), 1, 1, 1, False)
+    ]),
+        Space(2, 'Big House','11 Example Street','Vibrant neighbourhood',200,'[2024-10-14, 2024-10-15, 2024-10-16, 2024-10-17]', 1, [
+            Booking(6, datetime.strptime('2024-12-26', '%Y-%m-%d').date(), datetime.strptime('2025-01-01', '%Y-%m-%d').date(), 2, 2, 1, True)
+        ])
+    ], [])
