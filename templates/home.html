@@ -41,6 +41,8 @@
             <img src="/static/images/placeholder.png" alt="peterborough"></img>
             <p>
                 {{space.description}}
+                <br>
+                <a href="{{ url_for('display_single_space', id=space.id) }}">View</a>
             </p>
         </div>
         {% endfor %}

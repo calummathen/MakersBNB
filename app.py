@@ -5,8 +5,12 @@ from lib.space_repository import SpaceRepository
 from lib.space import Space
 from lib.user import User
 from lib.user_repository import UserRepository
+from lib.booking import Booking
+from lib.booking_repository import BookingRepository
 from validation_methods import check_signup_valid
 from dotenv import load_dotenv
+from datetime import date
+import json
 from helper_functions import protect_route
 
 
@@ -40,6 +44,25 @@ def get_index():
     repository = SpaceRepository(connection)
     spaces = repository.all()
     return render_template('home.html', spaces=spaces)
+
+
+@app.route('/space/<int:id>', methods=['GET'])
+def display_single_space(id):
+    connection = get_flask_database_connection(app)
+    space_repository = SpaceRepository(connection)
+    space = space_repository.find(id)
+    booking_repository = BookingRepository(connection)
+    current_bookings = booking_repository.find_booking_for_space(id)
+    unavailable_dates = []
+    for booking in current_bookings:
+        dates = {
+            "from": booking.check_in.strftime('%Y-%m-%d'),
+            "to": booking.check_out.strftime('%Y-%m-%d')
+        }
+        unavailable_dates.append(dates)
+
+    return render_template('single_space.html', space=space, unavailable_dates=unavailable_dates)
+    
 
 # Route for Signing up
 # Commented out as don't believe it is needed anymore, but want to check:
@@ -81,9 +104,6 @@ def login():
 def logout():
     session.clear()
     return 'hello world'
-
-
-   
 
 @app.route('/new_space', methods=['GET'])
 def get_test_route():
