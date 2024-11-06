@@ -1,5 +1,5 @@
 from lib.database_connection import get_flask_database_connection
-from flask import request, render_template, session
+from flask import request, render_template, session, redirect
 from lib.user import User
 from lib.user_repository import UserRepository
 from validation_methods import check_email_is_valid, check_signup_valid
@@ -20,7 +20,7 @@ def auth_routes(app):
             repository = UserRepository(connection)
             repository.create_user(User(None, username, name, password, email, phone_number))
             return render_template('login.html')
-
+    
     @app.route('/login', methods=['POST'])
     def login():
         connection = get_flask_database_connection(app)
@@ -35,7 +35,8 @@ def auth_routes(app):
         if 'username' not in session:
             session['id'] = user['id']
             session['username'] = user['username']
-        return user
+        # return user
+        return redirect('/home', code=200)
 
     @app.route('/logout')
     def logout():

@@ -94,34 +94,15 @@ def sign_up():
     return render_template('login.html')
 '''
 
-@app.route('/login', methods=['POST'])
-def login():
-    connection = get_flask_database_connection(app)
-    repository = UserRepository(connection)
-    username = request.form["username"]
-    password = request.form["password"]
-    user = repository.login(username, password)
-    if not user:
-        error = 'Incorrect Username or Password'
-        return error
-        # return render_template('login.html', error=error)
-    if 'username' not in session:
-        session['id'] = user['id']
-        session['username'] = user['username']
-    # return user
-    return redirect('/home', code=200)
 
-@app.route('/logout')
-def logout():
-    session.clear()
-    return 'hello world'
+
 
 
 @app.route('/new_space', methods=['GET'])
 def get_test_route():
     return render_template('space_form.html')
 
-  
+
 @app.route('/signup', methods=['POST'])
 def create_user():
     name = str(request.form.get('name'))
