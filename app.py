@@ -7,6 +7,7 @@ from lib.user import User
 from lib.user_repository import UserRepository
 from validation_methods import check_signup_valid
 from dotenv import load_dotenv
+from helper_functions import protect_route
 
 
 # Create a new Flask app
@@ -78,8 +79,7 @@ def logout():
     return 'hello world'
 
 
-    
-    
+   
 
 @app.route('/new_space', methods=['GET'])
 def get_test_route():
@@ -103,10 +103,7 @@ def create_user():
         return f'{str(repository.find_user(3))} \n SHOULD RETURN TO login.html - this is temporary'
         # return render_template('login.html')
 
-def protect_route():
-    if not session.get('id'):
-        return redirect(url_for('get_root'))
-    return None
+
 
 # These lines start the server if you run this file directly
 # They also start the server configured to use the test database
