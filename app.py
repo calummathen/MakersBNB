@@ -1,15 +1,19 @@
 import os
-from flask import Flask, request, render_template, session
+from flask import Flask, request, render_template, session, redirect, url_for
 from lib.database_connection import get_flask_database_connection
 from lib.space_repository import SpaceRepository
 from lib.space import Space
 from lib.user import User
 from lib.user_repository import UserRepository
 from validation_methods import check_signup_valid
+from dotenv import load_dotenv
+
 
 # Create a new Flask app
 app = Flask(__name__)
-app.secret_key = 'sample_key'
+
+load_dotenv()
+app.secret_key = os.getenv('SECRET_KEY')
 
 # == Your Routes Here ==
 
@@ -24,10 +28,13 @@ def get_root():
 
 @app.route('/index', methods=['GET'])
 def get_index():
+    logged_in = protect_route()
+    if logged_in:
+        return logged_in
+    
     connection = get_flask_database_connection(app)
     repository = SpaceRepository(connection)
     spaces = repository.all()
-    print(spaces)
     return render_template('home.html', spaces=spaces)
 
 # Route for Signing up
@@ -95,6 +102,11 @@ def create_user():
         repository.create_user(User(None, username, name, password, email, phone_number))
         return f'{str(repository.find_user(3))} \n SHOULD RETURN TO login.html - this is temporary'
         # return render_template('login.html')
+
+def protect_route():
+    if not session.get('id'):
+        return redirect(url_for('get_root'))
+    return None
 
 # These lines start the server if you run this file directly
 # They also start the server configured to use the test database
