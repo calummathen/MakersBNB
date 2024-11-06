@@ -73,3 +73,21 @@ def test_delete_space(db_connection):
         Space(2, 'Big House','11 Example Street','Vibrant neighbourhood',200,'[2024-10-14, 2024-10-15, 2024-10-16, 2024-10-17]', 1),
         Space(3, 'Big Hotel','4 Street','Dangerous area',150.99,'[]', 2)
     ]
+    
+def test_get_all_spaces_for_owner_1(db_connection):
+    db_connection.seed('seeds/spaces.sql')
+    repository = SpaceRepository(db_connection)
+    result = repository.all_for_owner(1)
+    assert result == [
+        Space(1,'Stratfest','Wembley','Company event space',1000.50,'[2024-09-14, 2024-09-15, 2024-09-16]', 1),
+        Space(2, 'Big House','11 Example Street','Vibrant neighbourhood',200,'[2024-10-14, 2024-10-15, 2024-10-16, 2024-10-17]', 1)
+    ]
+    
+    
+def test_get_all_spaces_for_owner_2(db_connection):
+    db_connection.seed('seeds/spaces.sql')
+    repository = SpaceRepository(db_connection)
+    result = repository.all_for_owner(2)
+    assert result == [
+        Space(3, 'Big Hotel','4 Street','Dangerous area',150.99,'[]', 2)
+    ]
