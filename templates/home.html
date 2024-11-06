@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>MakersBnB</title>
 
-        <!--
+<head>
+    <title>MakersBnB</title>
+
+    <!--
             Head to https://github.com/makersacademy/web-applications-in-python/blob/main/pills/loading_css_or_static_files.md
             If you're wondering how the CSS file below is being loaded.
         -->
-        <link rel="stylesheet" href="/static/style.css" >
-    </head>
-    <body>
-        <h1>Book a Space</h1>
-        <p class="blessing">Website made possible thanks to our glorious leader Calum<br/>ALL HAIL CALUM</p>
-        <form action="/new_space">
-            <button>List a Space</button>
-        </form>
-        <div class="filter">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+    <h1>Book a Space</h1>
+    <p class="blessing">Website made possible thanks to our glorious leader Calum<br />ALL HAIL CALUM</p>
+    <form action="/new_space">
+        <button style="margin-bottom:1em">List your space</button>
+    </form>
+    <!-- Commented date related things out for now - unsure if we'll implement properly later -->
+    <!-- <div class="filter">
             <div class="dates">
                 <label>Available from (DD/MM/YY)</label>
                 <input />
@@ -27,18 +30,23 @@
             <form class="list-button">
                 <button>List Spaces</button>
             </form>
-        </div> 
+        </div>  -->
 
-        <div>
-            {% for space in spaces %}
+    <div>
+        {% for space in spaces %}
+        <div class="space-listing">
             <h4>
                 {{space.name}}
             </h4>
+            <img src="/static/images/placeholder.png" alt="peterborough"></img>
             <p>
                 {{space.description}}
             </p>
-            {% endfor %}
         </div>
+        {% endfor %}
 
-    </body>
+    </div>
+
+</body>
+
 </html>

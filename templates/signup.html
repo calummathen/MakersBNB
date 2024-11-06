@@ -1,21 +1,23 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>MakersBnB - Sign Up</title>
 
-        <!--
+<head>
+    <title>MakersBnB - Sign Up</title>
+
+    <!--
             Head to https://github.com/makersacademy/web-applications-in-python/blob/main/pills/loading_css_or_static_files.md
             If you're wondering how the CSS file below is being loaded.
         -->
-        <link rel="stylesheet" href="/static/style.css" >
-    </head>
-    <body>
-        <h1>Sign Up</h1>
-        <p class="blessing">Website made possible thanks to our glorious leader Calum<br/>ALL HAIL CALUM</p>
-        {%for error in errors%}
-            <p>{{error}}</p>
-        {% endfor %}
-        <form action="/create_user" method="post">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+    <h1>Sign Up</h1>
+    <p class="blessing">Website made possible thanks to our glorious leader Calum<br />ALL HAIL CALUM</p>
+    {%for error in errors%}
+    <p>{{error}}</p>
+    {% endfor %}
+    <form action="/create_user" method="post">
         <div class="body">
             <div class="signup-field">
                 <label for="name">Name</label>
@@ -37,10 +39,15 @@
                 <label for="password">Password</label>
                 <input type="text" id="password" name="password" required>
             </div>
-        </div> 
+        </div>
 
-            <button type="submit" >Submit</button>
-        </form>
+        <button type="submit">Submit</button>
+    </form>
+    <form action="/" method="get">
+        <p>Already have an account?</p>
+        <button type="submit">Login</button>
+    </form>
 
-    </body>
+</body>
+
 </html>

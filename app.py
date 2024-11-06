@@ -29,7 +29,7 @@ def get_login_page():
 def get_root():
     return render_template('signup.html',errors=[])
 
-@app.route('/index', methods=['GET'])
+@app.route('/home', methods=['GET'])
 def get_index():
     logged_in = protect_route()
     if logged_in:
@@ -73,7 +73,8 @@ def login():
     if 'username' not in session:
         session['id'] = user['id']
         session['username'] = user['username']
-    return user
+    # return user
+    return redirect('/home', code=200)
 
 @app.route('/logout')
 def logout():
