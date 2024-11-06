@@ -21,9 +21,12 @@ app.secret_key = os.getenv('SECRET_KEY')
 # Returns the homepage
 # Try it:
 #   ; open http://localhost:5001/index
+@app.route('/', methods=['GET'])
+def get_login_page():
+    return render_template('login.html')
+
 @app.route('/signup', methods=['GET'])
 def get_root():
-    connection = get_flask_database_connection(app)
     return render_template('signup.html',errors=[])
 
 @app.route('/index', methods=['GET'])
@@ -100,8 +103,8 @@ def create_user():
         connection = get_flask_database_connection(app)
         repository = UserRepository(connection)
         repository.create_user(User(None, username, name, password, email, phone_number))
-        return f'{str(repository.find_user(3))} \n SHOULD RETURN TO login.html - this is temporary'
-        # return render_template('login.html')
+        # return f'{str(repository.find_user(3))} \n SHOULD RETURN TO login.html - this is temporary'
+        return render_template('login.html',account_created=True)
 
 def protect_route():
     if not session.get('id'):
@@ -113,3 +116,4 @@ def protect_route():
 # if started in test mode.
 if __name__ == '__main__':
     app.run(debug=True, port=int(os.environ.get('PORT', 5001)))
+
