@@ -39,11 +39,22 @@ def get_index():
     logged_in = protect_route()
     if logged_in:
         return logged_in
-    
     connection = get_flask_database_connection(app)
     repository = SpaceRepository(connection)
     spaces = repository.all()
     return render_template('home.html', spaces=spaces)
+
+@app.route('/profile')
+def profile():
+    connection = get_flask_database_connection(app)
+    repository = UserRepository(connection)
+    id = session['id']
+    user = repository.find_with_space(id)
+    
+    
+
+from authentication_routes import auth_routes
+auth_routes(app)
 
 
 @app.route('/space/<int:id>', methods=['GET'])
@@ -105,11 +116,13 @@ def logout():
     session.clear()
     return 'hello world'
 
+
 @app.route('/new_space', methods=['GET'])
 def get_test_route():
     return render_template('space_form.html')
 
-@app.route('/create_user', methods=['POST'])
+  
+@app.route('/signup', methods=['POST'])
 def create_user():
     name = str(request.form.get('name'))
     print(name)
@@ -126,6 +139,7 @@ def create_user():
         repository.create_user(User(None, username, name, password, email, phone_number))
         # return f'{str(repository.find_user(3))} \n SHOULD RETURN TO login.html - this is temporary'
         return render_template('login.html',account_created=True)
+
 
 
 
