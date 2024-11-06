@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>MakersBnB - Sign Up</title>
+    <title>MakersBnB - Log In</title>
 
     <!--
             Head to https://github.com/makersacademy/web-applications-in-python/blob/main/pills/loading_css_or_static_files.md
@@ -12,25 +12,13 @@
 </head>
 
 <body>
-    <h1>Sign Up</h1>
+    <h1>Log In</h1>
     <p class="blessing">Website made possible thanks to our glorious leader Calum<br />ALL HAIL CALUM</p>
-    {%for error in errors%}
-    <p>{{error}}</p>
-    {% endfor %}
-    <form action="/create_user" method="post">
+    {% if account_created %}
+    <p>Account created successfully. Please sign in.</p>
+    {% endif %}
+    <form action="/login" method="post">
         <div class="body">
-            <div class="signup-field">
-                <label for="name">Name</label>
-                <input type="text" id="name" name="name" required>
-            </div>
-            <div class="signup-field">
-                <label for="email">Email</label>
-                <input type="text" id="email" name="email" required>
-            </div>
-            <div class="signup-field">
-                <label for="phone_number">Phone Number</label>
-                <input type="text" id="phone_number" name="phone_number" required>
-            </div>
             <div class="signup-field">
                 <label for="username">Username</label>
                 <input type="text" id="username" name="username" required>
@@ -43,11 +31,11 @@
 
         <button type="submit">Submit</button>
     </form>
-    <form action="/" method="get">
-        <p>Already have an account?</p>
-        <button type="submit">Login</button>
+    <form action="/signup" method="get">
+        <p>Don't have an account yet?</p>
+        <button type="submit">Sign Up</button>
     </form>
-
+    
 </body>
 
 </html>
