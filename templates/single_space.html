@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{space.name}}</title>
+
+        <!--
+            Head to https://github.com/makersacademy/web-applications-in-python/blob/main/pills/loading_css_or_static_files.md
+            If you're wondering how the CSS file below is being loaded.
+        -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Include Flatpickr CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+        <link rel="stylesheet" href="/static/style.css" >
+    </head>
+    <body>
+        <h1>{{space.name}}</h1>
+
+        <div>
+            <h4>
+                {{  space.description  }}
+            </h4>
+            <h3>PICTURE</h3>
+            <p>
+                £{{  "%.2f"|format(space.price)  }}
+            </p>
+            <p>
+                {{  space.address  }}
+            </p>
+
+            </div>
+             
+            <h3>Book Now</h3>
+    
+            <div id="inlineCalendar"></div>
+            <p id="selectedDate">Selected Date: None</p> <!-- Paragraph to show the selected date -->
+        
+            <!-- Include Flatpickr JavaScript -->
+            <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+            <!-- Initialize Flatpickr inline -->
+
+            <script>
+                // Initialize Flatpickr on the div, with inline mode
+                const unavailableDatesString = '{{ unavailable_dates | tojson | safe }}';
+                const unavailableDates = JSON.parse(unavailableDatesString);
+                console.log(unavailableDates);  // Check the parsed object
+                flatpickr("#inlineCalendar", {
+                    inline: true,  // Embed calendar in the page
+                    altInput: true,
+                    altFormat: "F j, Y",
+                    dateFormat: "Y-m-d",
+                    minDate: "today",
+                    disable: unavailableDates,
+                    onChange: function(selectedDates, dateStr) {
+                        // Display the selected date
+                        document.getElementById("selectedDate").textContent = "Selected Date: " + dateStr;
+                    }
+                });
+            </script>
+            
+
+    </body>
+</html>

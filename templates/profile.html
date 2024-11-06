@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- Maybe have the username here -->
+    <h2>Profile</h2>
+    <!-- My properties Information -->
+    <side>
+        <h4>My Properties</h4>
+        <div>
+            {% for space in spaces %}
+            <div>
+                {{space.name}}
+            </div>
+            {% endfor %}
+        </div>
+
+    </side>
+    <!-- My Bookings / Bookings for my property -->
+    <main>My Bookings</main>
+    <!-- My Details -->
+    <side>My Details</side>
+
+</body>
+</html>
