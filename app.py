@@ -49,7 +49,8 @@ def profile():
     connection = get_flask_database_connection(app)
     repository = UserRepository(connection)
     id = session['id']
-    user = repository.find_with_space(id)
+    user = repository.find_all_information(id)
+    return render_template('profile.html', user_information=user)
     
     
 

@@ -7,12 +7,12 @@
 </head>
 <body>
     <!-- Maybe have the username here -->
-    <h2>Profile</h2>
+    <h2>{{user_information.username}}'s Profile</h2>
     <!-- My properties Information -->
     <side>
         <h4>My Properties</h4>
         <div>
-            {% for space in spaces %}
+            {% for space in user_information.spaces %}
             <div>
                 {{space.name}}
             </div>
@@ -21,9 +21,32 @@
 
     </side>
     <!-- My Bookings / Bookings for my property -->
-    <main>My Bookings</main>
+    <main>
+        <h4>My Bookings</h4>
+        {% for space in user_information.spaces %}
+        <div>
+            <h5>
+                {{space.name}}
+            </h5>
+            {% for booking in space.bookings %}
+            <div>
+                {{booking.check_in}}
+                {{booking.check_out}}
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </main>
     <!-- My Details -->
-    <side>My Details</side>
+    <side>
+        <h4>My Details</h4>
+        <div>
+            <p>Name: {{user_information.name}}</p>
+            <p>Email: {{user_information.email}}</p>
+            <p>Phone Number: {{user_information.phone_number}}</p>
+            <button>Edit Details</button>
+        </div>
+    </side>
 
 </body>
 </html>

@@ -73,3 +73,17 @@ def test_delete_space(db_connection):
         Space(2, 'Big House','11 Example Street','Vibrant neighbourhood',200,'[2024-10-14, 2024-10-15, 2024-10-16, 2024-10-17]', 1),
         Space(3, 'Big Hotel','4 Street','Dangerous area',150.99,'[]', 2)
     ]
+
+# """
+# Testing get_all_user_information
+# Gets all bookings
+# """
+# def test_find_all_user_information_1(db_connection):
+#     db_connection.seed('seeds/spaces.sql')
+#     repository = SpaceRepository(db_connection)
+#     result = repository.find_all_user_info(1)
+#     # print(result)
+#     assert result == [
+#         Space(1, 'Stratfest', 'Wembley', 'Company event space', 1000.50, '[2024-09-14, 2024-09-15, 2024-09-16]', 1, [Booking(1, '2024-12-01', '2024-12-07', 1, 1, 1, True), Booking(3, '2024-12-16', '2024-12-20', 1, 1, 1, False), Booking(5, '2024-12-26', '2025-01-01', 1, 1, 1, False)])
+#     ]
+        
