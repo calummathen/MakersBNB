@@ -126,7 +126,6 @@ class UserRepository:
         all_user_spaces = []
         space_ref = user_information[0]['space_id']
         for index, space in enumerate(user_information):
-            print(space)
             if not space['space_id'] == space_ref:
                 complete_space = Space(user_information[index - 1]['space_id'], user_information[index - 1]['space_name'], user_information[index - 1]['address'], user_information[index - 1]['description'], user_information[index - 1]['price'], user_information[index - 1]['dates_booked'], user_information[index - 1]['space_owner_id'], bookings)
                 all_user_spaces.append(complete_space)
