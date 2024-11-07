@@ -34,14 +34,6 @@ def get_login_page(error=None):
         return render_template('login.html', error=error)
 
 
-@app.route('/1', methods=['GET'])
-def tester():
-    return render_template('tester.html')
-
-@app.route('/1', methods=['GET'])
-def tester():
-    return render_template('tester.html')
-
 @app.route('/signup', methods=['GET'])
 def get_root():
     return render_template('signup.html',errors=[])
