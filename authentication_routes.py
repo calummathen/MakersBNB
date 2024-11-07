@@ -1,5 +1,5 @@
 from lib.database_connection import get_flask_database_connection
-from flask import request, render_template, session, redirect
+from flask import request, render_template, session, redirect, url_for
 from lib.user import User
 from lib.user_repository import UserRepository
 from validation_methods import check_email_is_valid, check_signup_valid
@@ -30,16 +30,18 @@ def auth_routes(app):
         user = repository.login(username, password)
         if not user:
             error = 'Incorrect Username or Password'
-
-            return error
+            return render_template('login.html', error=error)
             # return render_template('login.html', error=error)
         if 'username' not in session or 'username' in session != username:
             session['id'] = user['id']
             session['username'] = user['username']
-        return redirect('/home', code=200)
+        return redirect('/home')
 
 
     @app.route('/logout')
     def logout():
         session.clear()
-        return 'hello world'
+        error = 'You have been signed out'
+        return redirect(url_for('get_login_page'))
+        # return redirect(url_for('get_login_page', error=error))
+        # ^error being passed doesn't go anywhere, unsure how to change that
