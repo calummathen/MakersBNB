@@ -11,7 +11,7 @@ from validation_methods import check_signup_valid
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
 import json
-from helper_functions import protect_route
+from helper_functions import protect_route, calculate_total_price
 
 
 # Create a new Flask app
@@ -109,9 +109,13 @@ def create_booking(space_id):
     user_id = 1
 
     # print(check_in, check_out, user_id, space_id)
-
     connection = get_flask_database_connection(app)
-    new_booking = Booking(None, check_in, check_out, user_id, space_id)
+    space_repository = SpaceRepository(connection)
+    space = space_repository.find(space_id)
+    price_per_night = space.price
+    total_price = calculate_total_price(price_per_night, check_in, check_out)
+    owner_id = space.owner_id
+    new_booking = Booking(None, check_in, check_out, user_id, space_id, owner_id, total_price)
     # need to add user ID!!!!
 
     booking_repository = BookingRepository(connection)
@@ -191,7 +195,7 @@ def booking_requests():
                 all_required_info_for_a_booking["username"] = user_for_this_booking.username
                 all_required_info_for_a_booking["user_id"] = user_for_this_booking.id
                 all_required_info_for_a_booking["check_in"] = booking.check_in
-                all_required_info_for_a_booking["check_out"] = booking.check_in
+                all_required_info_for_a_booking["check_out"] = booking.check_out
                 all_required_info_for_a_booking["approved"] = booking.approved
                 all_required_info_for_a_booking["booking_id"] = booking.booking_id
                 all_required_info_for_all_bookings.append(all_required_info_for_a_booking)        
