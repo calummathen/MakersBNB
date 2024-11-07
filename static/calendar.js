@@ -36,10 +36,12 @@ flatpickr("#inlineCalendar", {
         
         // Convert the difference from milliseconds to days
         const differenceInDays = differenceInTime / (1000 * 3600 * 24);
+        const totalPrice = differenceInDays * pricePerNight
         
         // Now you can use differenceInDays as an integer
         console.log("Number of days: " + differenceInDays);
         document.getElementById("totalDays").textContent = "Number of days: " + differenceInDays;
+        document.getElementById("totalDays").textContent = "Total price: £" + totalPrice + " for " + differenceInDays + " nights";
         // document.getElementById("selectedDates").textContent = "Selected Date: " + dateStr;
     }
 });
