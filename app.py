@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, render_template, session, redirect, url_for
+from flask import Flask, request, render_template, session, redirect, url_for, flash
 from lib.database_connection import get_flask_database_connection
 from lib.space_repository import SpaceRepository
 from lib.space import Space
@@ -9,7 +9,7 @@ from lib.booking import Booking
 from lib.booking_repository import BookingRepository
 from validation_methods import check_signup_valid
 from dotenv import load_dotenv
-from datetime import date
+from datetime import datetime, timedelta
 import json
 from helper_functions import protect_route
 
@@ -66,13 +66,40 @@ def display_single_space(id):
     current_bookings = booking_repository.find_booking_for_space(id)
     unavailable_dates = []
     for booking in current_bookings:
+        check_in = booking.check_in
+        check_out = booking.check_out
         dates = {
-            "from": booking.check_in.strftime('%Y-%m-%d'),
-            "to": booking.check_out.strftime('%Y-%m-%d')
+            "from": (check_in + timedelta(days=1)).strftime('%Y-%m-%d'),
+            "to": (check_out - timedelta(days=1)).strftime('%Y-%m-%d')
         }
         unavailable_dates.append(dates)
 
     return render_template('single_space.html', space=space, unavailable_dates=unavailable_dates)
+
+@app.route('/space/create_booking/<int:space_id>', methods=['POST'])
+def create_booking(space_id):
+
+    check_in = datetime.strptime(request.form.get('startDate'), "%Y-%m-%d").date()
+    check_out = datetime.strptime(request.form.get('endDate'), "%Y-%m-%d").date()
+    user_id = 1
+
+    # print(check_in, check_out, user_id, space_id)
+
+    connection = get_flask_database_connection(app)
+    new_booking = Booking(None, check_in, check_out, user_id, space_id)
+    # need to add user ID!!!!
+
+    booking_repository = BookingRepository(connection)
+    if booking_repository.is_valid_booking(new_booking):
+        booking_repository.create_booking(new_booking)
+        flash("Booking successfully created!", "success") 
+        return redirect(url_for('display_single_space', id=space_id)) 
+    else:
+        flash("Invalid booking: The selected dates are not available.", "error")  # Flash error message
+        return redirect(url_for('display_single_space', id=space_id))  # Redirect
+    
+
+
     
 
 # Route for Signing up
