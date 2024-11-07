@@ -14,7 +14,6 @@ def test_initialise_user():
     assert user.password == password
     assert user.email == email
     assert user.phone_number == phone_number
-    assert user.owned_bookings == []
     assert user.spaces == []
 
 
@@ -39,5 +38,5 @@ def test_string_representation_of_user():
     password = "password"
     user = User(id, username, name, password, email, phone_number)
     user_string = str(user)
-    assert user_string == "User(1, username, name, password, example@gmail.com, 07777552233, [], [])"
+    assert user_string == "User(1, username, name, password, example@gmail.com, 07777552233, [])"
 

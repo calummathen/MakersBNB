@@ -63,14 +63,20 @@ class UserRepository:
                                                     spaces.description,\
                                                     spaces.price,\
                                                     spaces.dates_booked,\
+                                                    spaces.owner_id AS space_owner_id,\
                                                     bookings.id AS booking_id,\
                                                     bookings.check_in,\
                                                     bookings.check_out,\
                                                     bookings.user_id AS user_id,\
                                                     bookings.space_id AS bookings_space_id,\
-                                                    bookings.owner_id AS space_owner_id,\
+                                                    bookings.owner_id AS bookings_owner_id,\
                                                     bookings.approved\
-                                                    FROM users LEFT JOIN bookings ON bookings.owner_id = users.id LEFT JOIN spaces ON spaces.id = bookings.space_id WHERE users.id = %s ORDER BY spaces.id ASC', [user_id])
+                                                    FROM users\
+                                                    LEFT JOIN spaces ON spaces.owner_id = users.id\
+                                                    LEFT JOIN bookings ON bookings.space_id = spaces.id\
+                                                    WHERE users.id = %s\
+                                                    ORDER BY spaces.id ASC, bookings.id ASC', [user_id])
+                                                # FROM users LEFT JOIN bookings ON bookings.owner_id = users.id LEFT JOIN spaces ON spaces.id = bookings.space_id WHERE users.id = %s ORDER BY spaces.id ASC, bookings.id ASC', [user_id])
         return self._process_information(user_information)
     
     def find_all_information_as_guest(self, user_id):
@@ -86,14 +92,20 @@ class UserRepository:
                                                     spaces.description,\
                                                     spaces.price,\
                                                     spaces.dates_booked,\
+                                                    spaces.owner_id AS space_owner_id,\
                                                     bookings.id AS booking_id,\
                                                     bookings.check_in,\
                                                     bookings.check_out,\
                                                     bookings.user_id AS user_id,\
                                                     bookings.space_id AS bookings_space_id,\
-                                                    bookings.owner_id AS space_owner_id,\
+                                                    bookings.owner_id AS bookings_owner_id,\
                                                     bookings.approved\
-                                                    FROM users LEFT JOIN bookings ON bookings.user_id = users.id LEFT JOIN spaces ON bookings.space_id = spaces.id WHERE users.id = %s ORDER BY spaces.id ASC', [user_id])
+                                                    FROM users\
+                                                    LEFT JOIN bookings ON bookings.user_id = users.id\
+                                                    LEFT JOIN spaces ON spaces.id = bookings.space_id\
+                                                    WHERE users.id = %s\
+                                                    ORDER BY spaces.id ASC, bookings.id ASC', [user_id])
+                                                    # FROM users LEFT JOIN bookings ON bookings.user_id = users.id LEFT JOIN spaces ON bookings.space_id = spaces.id WHERE users.id = %s ORDER BY spaces.id ASC, bookings.id ASC', [user_id])
     
         return self._process_information(user_information)
     
@@ -112,18 +124,16 @@ class UserRepository:
         bookings = []
         all_user_spaces = []
         space_ref = user_information[0]['space_id']
-
         for index, space in enumerate(user_information):
-            
+            print(space)
             if not space['space_id'] == space_ref:
                 complete_space = Space(user_information[index - 1]['space_id'], user_information[index - 1]['space_name'], user_information[index - 1]['address'], user_information[index - 1]['description'], user_information[index - 1]['price'], user_information[index - 1]['dates_booked'], user_information[index - 1]['space_owner_id'], bookings)
                 all_user_spaces.append(complete_space)
                 bookings = []
                 space_ref = space['space_id']
             if space['bookings_space_id'] == space['space_id']:
-                booking = Booking(space['booking_id'], space['check_in'], space['check_out'], space['user_id'], space['bookings_space_id'], space['space_owner_id'], space['approved'])
+                booking = Booking(space['booking_id'], space['check_in'], space['check_out'], space['user_id'], space['bookings_space_id'], space['bookings_owner_id'], space['approved'])
                 bookings.append(booking)
-            
         complete_space = Space(space['space_id'], space['space_name'], space['address'], space['description'], space['price'], space['dates_booked'], space['space_owner_id'], bookings)
         all_user_spaces.append(complete_space)
         user = User(user_information[0]['owner_id'], user_information[0]['username'], user_information[0]['name'], None, user_information[0]['email'], user_information[0]['phone_number'], all_user_spaces)
