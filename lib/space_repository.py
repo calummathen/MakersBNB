@@ -26,3 +26,9 @@ class SpaceRepository():
     def delete(self,space_id):
         self._connection.execute('DELETE FROM spaces WHERE id = %s',[space_id])
         
+        
+    def all_for_owner(self, owner_id):
+        rows = self._connection.execute('SELECT * FROM spaces WHERE owner_id = %s ORDER BY id asc', [owner_id])
+        spaces = [Space(space['id'], space['name'], space['address'], space['description'],
+                        space['price'], space['dates_booked'], space['owner_id']) for space in rows]
+        return spaces
