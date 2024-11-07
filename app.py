@@ -49,9 +49,34 @@ def profile():
     connection = get_flask_database_connection(app)
     repository = UserRepository(connection)
     id = session['id']
-    user = repository.find_with_space(id)
-    
-    
+    owner_info = repository.find_all_information_as_owner(id)
+    guest_info = repository.find_all_information_as_guest(id)
+    username = session['username']
+
+    return render_template('profile.html', username=username, owner=owner_info, guest=guest_info)
+
+@app.route('/profile/edit', methods=['GET'])
+def edit_profile():
+    connection = get_flask_database_connection(app)
+    repository = UserRepository(connection)
+    id = session['id']
+    user = repository.find_user(id)
+    return render_template('edit_profile.html', user=user)
+
+@app.route('/profile/edit', methods=['POST'])
+def change_profile():
+    connection = get_flask_database_connection(app)
+    repository = UserRepository(connection)
+    username = request.form['username']
+    name = request.form['name']
+    email = request.form['email']
+    phone_number = request.form['phone_number']
+    id = session['id']
+    # Unfortunately need to do this to get the password
+    user = repository.find_user(id)
+    print(user.password)
+    repository.update_user(User(id, username, name, user.password, email, phone_number))
+    return redirect(url_for('profile'))
 
 from authentication_routes import auth_routes
 auth_routes(app)
@@ -104,25 +129,6 @@ def create_booking(space_id):
 
 # Route for Signing up
 # Commented out as don't believe it is needed anymore, but want to check:
-'''
-@app.route('/signup', methods=['POST'])
-def sign_up():
-    connection = get_flask_database_connection(app)
-    repository = UserRepository(connection)
-    id = request.form["id"]
-    username = request.form["username"]
-    name = request.form["name"]
-    password = request.form["password"]
-    email = request.form["email"]
-    phone_number = request.form["phone_number"]
-    # Will need a check for a unique user
-    new_user = User(id, username, name, password, email, phone_number)
-    repository.create_user(new_user)
-    return render_template('login.html')
-'''
-
-
-
 
 
 @app.route('/new_space', methods=['GET'])
@@ -130,23 +136,23 @@ def get_test_route():
     return render_template('space_form.html')
 
 
-@app.route('/signup', methods=['POST'])
-def create_user():
-    name = str(request.form.get('name'))
-    print(name)
-    email = str(request.form.get('email'))
-    phone_number = str(request.form.get('phone_number'))
-    username = str(request.form.get('username'))
-    password = str(request.form.get('password'))
-    errors = [error for error in check_signup_valid(name, email, phone_number, username, password) if error != True]
-    if len(errors) != 0:
-        return render_template('signup.html', errors=errors)
-    else:
-        connection = get_flask_database_connection(app)
-        repository = UserRepository(connection)
-        repository.create_user(User(None, username, name, password, email, phone_number))
-        # return f'{str(repository.find_user(3))} \n SHOULD RETURN TO login.html - this is temporary'
-        return render_template('login.html',account_created=True)
+# @app.route('/signup', methods=['POST'])
+# def create_user():
+#     name = str(request.form.get('name'))
+#     print(name)
+#     email = str(request.form.get('email'))
+#     phone_number = str(request.form.get('phone_number'))
+#     username = str(request.form.get('username'))
+#     password = str(request.form.get('password'))
+#     errors = [error for error in check_signup_valid(name, email, phone_number, username, password) if error != True]
+#     if len(errors) != 0:
+#         return render_template('signup.html', errors=errors)
+#     else:
+#         connection = get_flask_database_connection(app)
+#         repository = UserRepository(connection)
+#         repository.create_user(User(None, username, name, password, email, phone_number))
+#         # return f'{str(repository.find_user(3))} \n SHOULD RETURN TO login.html - this is temporary'
+#         return render_template('login.html',account_created=True)
 
 @app.route('/requests', methods=['GET'])
 def booking_requests():

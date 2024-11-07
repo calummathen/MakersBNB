@@ -15,6 +15,7 @@ class BookingRepository():
                                     result["check_out"],
                                     result["user_id"],
                                     result["space_id"],
+                                    result['owner_id'],
                                     result["approved"]) for result in results]
         return list_of_bookings
     
@@ -29,6 +30,7 @@ class BookingRepository():
                                     result["check_out"],
                                     result["user_id"],
                                     result["space_id"],
+                                    result['owner_id'],
                                     result["approved"]) for result in results]
         return list_of_bookings
     
@@ -43,12 +45,13 @@ class BookingRepository():
                                     result["check_out"],
                                     result["user_id"],
                                     result["space_id"],
+                                    result['owner_id'],
                                     result["approved"])
         return booking
     
     
     def create_booking(self, booking):
-        self.__connection.execute("INSERT INTO bookings (check_in, check_out, user_id, space_id, approved) VALUES(%s, %s, %s, %s, %s)", [booking.check_in, booking.check_out, booking.user_id, booking.space_id, booking.approved])
+        self.__connection.execute("INSERT INTO bookings (check_in, check_out, user_id, space_id, owner_id, approved) VALUES(%s, %s, %s, %s, %s, %s)", [booking.check_in, booking.check_out, booking.user_id, booking.space_id, booking.owner_id, booking.approved])
     
     
     def delete_booking(self, id):
