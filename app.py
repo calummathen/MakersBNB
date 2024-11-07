@@ -136,10 +136,22 @@ def create_booking(space_id):
 # Commented out as don't believe it is needed anymore, but want to check:
 
 
-@app.route('/new_space', methods=['GET'])
-def get_test_route():
+@app.route('/space/new', methods=['GET'])
+def get_new_space_form():
     return render_template('space_form.html')
 
+@app.route('/space/new', methods=['POST'])
+def create_new_space():
+    connection = get_flask_database_connection(app)
+    space_repository = SpaceRepository(connection)
+    name = request.form['name']
+    address = request.form['address']
+    description = request.form['description']
+    price = request.form['price']
+    id = session['id']
+    space = Space(None, name, address, description, price, '[]', id)
+    space_repository.create(space)
+    return redirect(url_for('profile'))
 
 # @app.route('/signup', methods=['POST'])
 # def create_user():
