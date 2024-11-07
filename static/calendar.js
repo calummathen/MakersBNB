@@ -24,10 +24,23 @@ flatpickr("#inlineCalendar", {
 
     onChange: function(selectedDates, dateStr, instance) {
         reapplyStyles(instance)
+        
         const [startDate, endDate] = dateStr.split(" to ");
         document.getElementById("startDate").value = startDate;
-        document.getElementById("endDate").value = endDate;                    
-        // document.getElementById("selectedDate").textContent = "Selected Date: " + dateStr;
+        document.getElementById("endDate").value = endDate; 
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+        
+        // Calculate the difference in milliseconds
+        const differenceInTime = end.getTime() - start.getTime();
+        
+        // Convert the difference from milliseconds to days
+        const differenceInDays = differenceInTime / (1000 * 3600 * 24);
+        
+        // Now you can use differenceInDays as an integer
+        console.log("Number of days: " + differenceInDays);
+        document.getElementById("totalDays").textContent = "Number of days: " + differenceInDays;
+        // document.getElementById("selectedDates").textContent = "Selected Date: " + dateStr;
     }
 });
 
