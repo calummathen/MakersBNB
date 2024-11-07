@@ -93,6 +93,7 @@ def test_search_for_everything_as_owner_1(db_connection):
     print(user)
     assert user == User(1, 'username_1', 'name_1', None, 'email_1@gmail.com', '07777111111', [
         Space(1, 'Stratfest', 'Wembley', 'Company event space', 1000.50, '[2024-09-14, 2024-09-15, 2024-09-16]', 1, [
+
             Booking(1, datetime.strptime('2024-12-01', '%Y-%m-%d').date(), datetime.strptime('2024-12-07', '%Y-%m-%d').date(), 1, 1, 1, True),
             Booking(2, datetime.strptime('2024-12-07', '%Y-%m-%d').date(), datetime.strptime('2024-12-12', '%Y-%m-%d').date(), 2, 1, 1, True),
             Booking(3, datetime.strptime('2024-12-16', '%Y-%m-%d').date(), datetime.strptime('2024-12-20', '%Y-%m-%d').date(), 1, 1, 1, False),
@@ -136,6 +137,7 @@ def test_search_for_everything_as_owner_2(db_connection):
         Space(3, 'Big Hotel','4 Street','Dangerous area', 150.99,'[]', 2, [
             Booking(9, datetime.strptime('2024-12-16', '%Y-%m-%d').date(), datetime.strptime('2024-12-20', '%Y-%m-%d').date(), 6, 3, 2, True),
             Booking(18, datetime.strptime('2025-01-05', '%Y-%m-%d').date(), datetime.strptime('2025-01-10', '%Y-%m-%d').date(), 4, 3, 2, False)
+
         ])
     ])
 
@@ -145,11 +147,13 @@ def test_search_for_everything_as_guest_2(db_connection):
     user = repository.find_all_information_as_guest(2)
     assert user == User(2, 'username_2', 'name_2', None, 'email_2@gmail.com', '07777222222', [
         Space(1, 'Stratfest', 'Wembley', 'Company event space', 1000.50, '[2024-09-14, 2024-09-15, 2024-09-16]', 1, [
+
             Booking(2, datetime.strptime('2024-12-07', '%Y-%m-%d').date(), datetime.strptime('2024-12-12', '%Y-%m-%d').date(), 2, 1, 1, True),
             Booking(4, datetime.strptime('2024-12-22', '%Y-%m-%d').date(), datetime.strptime('2024-12-23', '%Y-%m-%d').date(), 2, 1, 1, True),
+
     ]),
         Space(2, 'Big House','11 Example Street','Vibrant neighbourhood',200,'[2024-10-14, 2024-10-15, 2024-10-16, 2024-10-17]', 1, [
-            Booking(6, datetime.strptime('2024-12-26', '%Y-%m-%d').date(), datetime.strptime('2025-01-01', '%Y-%m-%d').date(), 2, 2, 1, True)
+            Booking(6, datetime.strptime('2024-12-26', '%Y-%m-%d').date(), datetime.strptime('2025-01-01', '%Y-%m-%d').date(), 2, 2, 1, 1200.0, True)
         ])
     ])
 

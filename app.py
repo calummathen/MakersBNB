@@ -11,7 +11,7 @@ from validation_methods import check_signup_valid
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
 import json
-from helper_functions import protect_route
+from helper_functions import protect_route, calculate_total_price
 
 
 # Create a new Flask app
@@ -27,8 +27,12 @@ app.secret_key = os.getenv('SECRET_KEY')
 # Try it:
 #   ; open http://localhost:5001/index
 @app.route('/', methods=['GET'])
-def get_login_page():
-    return render_template('login.html')
+def get_login_page(error=None):
+    if error == None:
+        return render_template('login.html')
+    else:
+        return render_template('login.html', error=error)
+
 
 @app.route('/signup', methods=['GET'])
 def get_root():
@@ -44,7 +48,7 @@ def get_index():
     spaces = repository.all()
     return render_template('home.html', spaces=spaces)
 
-@app.route('/profile')
+@app.route('/profile', methods=['GET'])
 def profile():
     connection = get_flask_database_connection(app)
     repository = UserRepository(connection)
@@ -52,7 +56,6 @@ def profile():
     owner_info = repository.find_all_information_as_owner(id)
     guest_info = repository.find_all_information_as_guest(id)
     username = session['username']
-
     return render_template('profile.html', username=username, owner=owner_info, guest=guest_info)
 
 @app.route('/profile/edit', methods=['GET'])
@@ -104,21 +107,23 @@ def display_single_space(id):
 @app.route('/space/create_booking/<int:space_id>', methods=['POST'])
 def create_booking(space_id):
 
+    connection = get_flask_database_connection(app)
     check_in = datetime.strptime(request.form.get('startDate'), "%Y-%m-%d").date()
     check_out = datetime.strptime(request.form.get('endDate'), "%Y-%m-%d").date()
-    user_id = 1
+    user_id = session["id"]
+    space_repository = SpaceRepository(connection)
+    space = space_repository.find(space_id)
+    price_per_night = space.price
+    total_price = calculate_total_price(price_per_night, check_in, check_out)
+    owner_id = space.owner_id
+    new_booking = Booking(None, check_in, check_out, user_id, space_id, owner_id, total_price)
 
-    # print(check_in, check_out, user_id, space_id)
-
-    connection = get_flask_database_connection(app)
-    new_booking = Booking(None, check_in, check_out, user_id, space_id)
-    # need to add user ID!!!!
 
     booking_repository = BookingRepository(connection)
     if booking_repository.is_valid_booking(new_booking):
         booking_repository.create_booking(new_booking)
         flash("Booking successfully created!", "success") 
-        return redirect(url_for('display_single_space', id=space_id)) 
+        return redirect(url_for('profile')) 
     else:
         flash("Invalid booking: The selected dates are not available.", "error")  # Flash error message
         return redirect(url_for('display_single_space', id=space_id))  # Redirect
@@ -172,6 +177,8 @@ def booking_requests():
         booking_information["check_out"] = booking.check_out
         booking_information["approved"] = booking.approved
         booking_information["space_name"] = space_repository.find(booking.space_id).name
+        booking_information["booking_id"] = booking.booking_id
+        booking_information["total_price"] = f"{booking.total_price:.2f}"
         booking_information_list.append(booking_information)
     
     
@@ -190,9 +197,10 @@ def booking_requests():
                 all_required_info_for_a_booking["username"] = user_for_this_booking.username
                 all_required_info_for_a_booking["user_id"] = user_for_this_booking.id
                 all_required_info_for_a_booking["check_in"] = booking.check_in
-                all_required_info_for_a_booking["check_out"] = booking.check_in
+                all_required_info_for_a_booking["check_out"] = booking.check_out
                 all_required_info_for_a_booking["approved"] = booking.approved
                 all_required_info_for_a_booking["booking_id"] = booking.booking_id
+                all_required_info_for_a_booking["total_price"] = f"{booking.total_price:.2f}"
                 all_required_info_for_all_bookings.append(all_required_info_for_a_booking)        
             all_bookings_for_a_space[space_name] = all_required_info_for_all_bookings
             all_bookings_for_each_space_for_owner.append(all_bookings_for_a_space)
@@ -200,16 +208,53 @@ def booking_requests():
     return render_template('requests.html', user_id=user_id, username=username, booking_information_list=booking_information_list, all_bookings_for_each_space_for_owner=all_bookings_for_each_space_for_owner)
     
 
-@app.route('/requests/<int:request_id>', methods=['GET'])
-def booking_request(request_id):
+@app.route('/requests/owner/<int:request_id>', methods=['GET'])
+def owners_booking_request(request_id):
     connection = get_flask_database_connection(app)
     booking_repository = BookingRepository(connection)
     booking = booking_repository.find_booking(request_id)
     space_repository = SpaceRepository(connection)
     space = space_repository.find(booking.space_id)
+    user_repository = UserRepository(connection)
+    username = user_repository.find_user(booking.user_id).username
+    space_name = space_repository.find(booking.space_id).name
+    booking.total_price = f"{booking.total_price:.2f}"
     if space.owner_id != session['id']:
         return '', 403
-    return f"Booking ID: {booking}, {space.owner_id}, {session['id']}"
+    print(booking.booking_id)
+    return render_template('owner_request.html', booking=booking, username=username, space_name=space_name)
+
+@app.route('/requests/user/<int:request_id>', methods=['GET'])
+def user_booking_request(request_id):
+    connection = get_flask_database_connection(app)
+    booking_repository = BookingRepository(connection)
+    booking = booking_repository.find_booking(request_id)
+    space_repository = SpaceRepository(connection)
+    space = space_repository.find(booking.space_id)
+    user_repository = UserRepository(connection)
+    username = user_repository.find_user(booking.user_id).username
+    space_name = space_repository.find(booking.space_id).name
+    booking.total_price = f"{booking.total_price:.2f}"
+    if booking.user_id != session['id']:
+        return '', 403
+    print(booking.booking_id)
+    return render_template('user_request.html', booking=booking, username=username, space_name=space_name)
+
+@app.route('/requests/approved', methods=['POST'])
+def approve_booking():
+    connection = get_flask_database_connection(app)
+    booking_repository = BookingRepository(connection)
+    booking_id = request.form["booking_id"]
+    booking_repository.approved(booking_id)
+    return redirect(url_for('booking_requests'))
+
+@app.route('/requests/cancel', methods=['POST'])
+def cancel_booking():
+    connection = get_flask_database_connection(app)
+    booking_repository = BookingRepository(connection)
+    booking_id = request.form["booking_id"]
+    booking_repository.delete_booking(booking_id)
+    return redirect(url_for('booking_requests'))
 
 # These lines start the server if you run this file directly
 # They also start the server configured to use the test database

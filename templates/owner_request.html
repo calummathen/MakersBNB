@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request</title>
+</head>
+<body>
+    <h1>{{ space_name }}</h1>
+    <h3>check_in: {{ booking.check_in }}</h3>
+    <h3>check_out: {{ booking.check_out }}</h3>
+    <h3>User: {{ username }}</h3>
+    <h3>Total price: £{{ booking.total_price }}
+    <h3>Approved: {{ booking.approved }}</h3>
+
+
+    {% if not booking.approved %}
+        <form action="{{ url_for('approve_booking') }}" method="post">
+            <input type="hidden" name="booking_id" value="{{ booking.booking_id }}">
+            <button type="submit">Accept</button>
+        </form>
+    {% endif %}
+
+
+    <form action="{{ url_for('cancel_booking') }}" method="post">
+        <input type="hidden" name="booking_id" value="{{ booking.booking_id }}">
+        <button type="submit">Cancel</button>
+    </form>
+
+</body>
+</html>
