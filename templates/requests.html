@@ -13,6 +13,7 @@
             <h3>check_in: {{ booking_information["check_in"] }}</h3>
             <h3>check_out: {{ booking_information["check_out"] }}</h3>
             <h3>space name: {{ booking_information["space_name"] }}</h3>
+            <h3>Total price: £{{ booking_information["total_price"] }}<h3/>
             <h3>Approved booking: {{ booking_information["approved"] }}</h3>
             <hr/>
         {% endfor %}
@@ -30,7 +31,8 @@
                         <h3>check_in: {{ booking["check_in"] }}</h3>
                         <h3>check_out: {{ booking["check_out"] }}</h3>
                         <h3>User: {{ booking["username"] }}</h3>
-                        <h3>Approved: {{ booking["approved"] }}</h3>
+                        <h3>Total price: £{{ booking["total_price"] }}<h3/>
+                        <h3>Approved booking: {{ booking["approved"] }}</h3>
                         <hr/>
                     {% endfor %}
             {% endfor %}
