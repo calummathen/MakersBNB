@@ -91,3 +91,4 @@ def test_get_all_spaces_for_owner_2(db_connection):
     assert result == [
         Space(3, 'Big Hotel','4 Street','Dangerous area',150.99,'[]', 2)
     ]
+

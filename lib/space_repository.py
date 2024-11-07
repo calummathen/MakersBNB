@@ -1,4 +1,5 @@
 from lib.space import Space
+from lib.booking import Booking
 
 class SpaceRepository():
     def __init__(self, db_connection):
@@ -19,11 +20,11 @@ class SpaceRepository():
         self._connection.execute('INSERT INTO spaces (name,address,description,price,dates_booked,owner_id) VALUES (%s,%s,%s,%s,%s,%s)',
                                 [new_space.name, new_space.address, new_space.description, new_space.price, new_space.dates_booked, new_space.owner_id])
     
-    def update(self,new_space):
+    def update(self, new_space):
         self._connection.execute('UPDATE spaces SET name=%s,address=%s,description=%s,price=%s,dates_booked=%s WHERE id = %s' ,
                                 [new_space.name, new_space.address, new_space.description, new_space.price, new_space.dates_booked, new_space.id])
         
-    def delete(self,space_id):
+    def delete(self, space_id):
         self._connection.execute('DELETE FROM spaces WHERE id = %s',[space_id])
         
         
@@ -32,3 +33,4 @@ class SpaceRepository():
         spaces = [Space(space['id'], space['name'], space['address'], space['description'],
                         space['price'], space['dates_booked'], space['owner_id']) for space in rows]
         return spaces
+

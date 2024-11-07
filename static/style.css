@@ -1,4 +1,4 @@
-body {
+.main{
     font-size: 18px;
     display: flex;
     align-items: center;
@@ -46,4 +46,40 @@ body {
     padding-bottom: 0.3em;
     padding-left: 0.8em;
     margin-bottom:1em;
+}
+
+.menu-bar{
+    list-style-type:none;
+    margin:0;
+    padding:0;
+    overflow:hidden;
+    background-color:aqua
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #2b2b2b;
+}
+li {
+    float: right;
+}
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding:20px;
+    font-size:20px;
+    text-decoration: none;
+}
+li a:hover {
+    animation-name: menubarhover;
+    animation-duration: 0.2s;
+    animation-fill-mode: forwards;
+}
+@keyframes menubarhover {
+    0% {background-color:#2b2b2b; box-shadow: 0px 0px 00px #a70000;}
+    100% {background-color:#a70000; box-shadow: 0px 4px 10px #a70000;}
 }
