@@ -19,7 +19,7 @@ def auth_routes(app):
             connection = get_flask_database_connection(app)
             repository = UserRepository(connection)
             repository.create_user(User(None, username, name, password, email, phone_number))
-            return render_template('login.html')
+            return redirect('get_login_page')
     
     @app.route('/login', methods=['POST'])
     def login():

@@ -47,7 +47,7 @@ def get_index():
     spaces = repository.all()
     return render_template('home.html', spaces=spaces)
 
-@app.route('/profile')
+@app.route('/profile', methods=['GET'])
 def profile():
     connection = get_flask_database_connection(app)
     repository = UserRepository(connection)
@@ -55,7 +55,6 @@ def profile():
     owner_info = repository.find_all_information_as_owner(id)
     guest_info = repository.find_all_information_as_guest(id)
     username = session['username']
-
     return render_template('profile.html', username=username, owner=owner_info, guest=guest_info)
 
 @app.route('/profile/edit', methods=['GET'])
