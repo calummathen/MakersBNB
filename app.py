@@ -172,6 +172,7 @@ def booking_requests():
         booking_information["check_out"] = booking.check_out
         booking_information["approved"] = booking.approved
         booking_information["space_name"] = space_repository.find(booking.space_id).name
+        booking_information["booking_id"] = booking.booking_id
         booking_information_list.append(booking_information)
     
     
@@ -200,16 +201,51 @@ def booking_requests():
     return render_template('requests.html', user_id=user_id, username=username, booking_information_list=booking_information_list, all_bookings_for_each_space_for_owner=all_bookings_for_each_space_for_owner)
     
 
-@app.route('/requests/<int:request_id>', methods=['GET'])
-def booking_request(request_id):
+@app.route('/requests/owner/<int:request_id>', methods=['GET'])
+def owners_booking_request(request_id):
     connection = get_flask_database_connection(app)
     booking_repository = BookingRepository(connection)
     booking = booking_repository.find_booking(request_id)
     space_repository = SpaceRepository(connection)
     space = space_repository.find(booking.space_id)
+    user_repository = UserRepository(connection)
+    username = user_repository.find_user(booking.user_id).username
+    space_name = space_repository.find(booking.space_id).name
     if space.owner_id != session['id']:
         return '', 403
-    return f"Booking ID: {booking}, {space.owner_id}, {session['id']}"
+    print(booking.booking_id)
+    return render_template('owner_request.html', booking=booking, username=username, space_name=space_name)
+
+@app.route('/requests/user/<int:request_id>', methods=['GET'])
+def user_booking_request(request_id):
+    connection = get_flask_database_connection(app)
+    booking_repository = BookingRepository(connection)
+    booking = booking_repository.find_booking(request_id)
+    space_repository = SpaceRepository(connection)
+    space = space_repository.find(booking.space_id)
+    user_repository = UserRepository(connection)
+    username = user_repository.find_user(booking.user_id).username
+    space_name = space_repository.find(booking.space_id).name
+    if booking.user_id != session['id']:
+        return '', 403
+    print(booking.booking_id)
+    return render_template('user_request.html', booking=booking, username=username, space_name=space_name)
+
+@app.route('/requests/approved', methods=['POST'])
+def approve_booking():
+    connection = get_flask_database_connection(app)
+    booking_repository = BookingRepository(connection)
+    booking_id = request.form["booking_id"]
+    booking_repository.approved(booking_id)
+    return redirect(url_for('booking_requests'))
+
+@app.route('/requests/cancel', methods=['POST'])
+def cancel_booking():
+    connection = get_flask_database_connection(app)
+    booking_repository = BookingRepository(connection)
+    booking_id = request.form["booking_id"]
+    booking_repository.delete_booking(booking_id)
+    return redirect(url_for('booking_requests'))
 
 # These lines start the server if you run this file directly
 # They also start the server configured to use the test database

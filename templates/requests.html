@@ -7,29 +7,37 @@
 </head>
 <body>
     <h1>Your Bookings:</h1>
-    {% for booking_information in booking_information_list %}
-        <h3>check_in: {{ booking_information["check_in"] }}</h3>
-        <h3>check_out: {{ booking_information["check_out"] }}</h3>
-        <h3>space name: {{ booking_information["space_name"] }}</h3>
-        <h3>Approved booking: {{ booking_information["approved"] }}</h3>
-        <hr/>
-    {% endfor %}
-
-    <h1>Bookings for your properties:</h1>
-    {% for bookings_for_space in all_bookings_for_each_space_for_owner %}
-        {% for space_name, bookings in bookings_for_space.items() %}
-            <h2>Space name: {{ space_name }}</h2>
+    {% if booking_information_list != [] %}
+        {% for booking_information in booking_information_list %}
+            <h3><a href="{{ url_for('user_booking_request', request_id=booking_information['booking_id']) }}">Go to this booking</a></h3>
+            <h3>check_in: {{ booking_information["check_in"] }}</h3>
+            <h3>check_out: {{ booking_information["check_out"] }}</h3>
+            <h3>space name: {{ booking_information["space_name"] }}</h3>
+            <h3>Approved booking: {{ booking_information["approved"] }}</h3>
             <hr/>
-                {% for booking in bookings %}
-                    <h3><a href="http://127.0.0.1:5001/requests/{{ booking["booking_id"] }}">Go to this booking</a></h3>
-                    <h3>check_in: {{ booking["check_in"] }}</h3>
-                    <h3>check_out: {{ booking["check_out"] }}</h3>
-                    <h3>User: {{ booking["username"] }}</h3>
-                    <h3>Approved: {{ booking["approved"] }}</h3>
-                    <hr/>
-                {% endfor %}
         {% endfor %}
-    {% endfor %}
+    {% else %}
+        <h2>No bookings to display</h2>
+    {% endif %}
+    <h1>Bookings for your properties:</h1>
+    {% if all_bookings_for_each_space_for_owner != [] %}
+        {% for bookings_for_space in all_bookings_for_each_space_for_owner %}
+            {% for space_name, bookings in bookings_for_space.items() %}
+                <h2>Space name: {{ space_name }}</h2>
+                <hr/>
+                    {% for booking in bookings %}
+                        <h3><a href="{{ url_for('owners_booking_request', request_id=booking.booking_id) }}">Go to this booking</a></h3>
+                        <h3>check_in: {{ booking["check_in"] }}</h3>
+                        <h3>check_out: {{ booking["check_out"] }}</h3>
+                        <h3>User: {{ booking["username"] }}</h3>
+                        <h3>Approved: {{ booking["approved"] }}</h3>
+                        <hr/>
+                    {% endfor %}
+            {% endfor %}
+        {% endfor %}
+    {% else %}
+        <h2>No bookings to display</h2>
+    {% endif %}
 
 </body>
 </html>
