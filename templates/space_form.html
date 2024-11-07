@@ -5,35 +5,72 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>List a Space</title>
     <link rel="stylesheet" href="/static/new_space.css" >
+    <link rel="stylesheet" href="/static/space_form.css" >
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/home" style="display: inline-flex; align-items: center;">
+            <img src="/static/house-door.svg" alt="Icon" style="width: 30px; height: 30px; margin-right: 8px;">
+            MakersBNB
+        </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/home">Home</a>
+                <a class="nav-link" href="{{url_for('booking_requests')}}">Requests</a>
+                <a class="nav-link" href="{{url_for('profile')}}">Profile</a>
+                <a class="nav-link" href="{{url_for('logout')}}">Logout</a>
+              </div>
+          </div>
+        </div>
+      </nav>
     <div class="main">
     <main>
-        <h2>List a Space</h2>
-        <p class="blessing">Website made possible thanks to our glorious leader Calum<br/>ALL HAIL CALUM</p>
-        <form class="new_space_form" action="/space/new" method="POST">
-            <div class="name-nspace label-input">
-                <label for="name">Name</label>
-                <input type="text" name="name" />
+        <div class="text-container" style="position: relative; width: 100%; height: 1000px; background-image: url('/static/images/space_form_background.jpg'); background-size: cover; background-position: center; opacity: 0.75; display: flex; justify-content: center; align-items: center;">
+            <div class="form-container" style="position: relative; z-index: 1; width: 100%; max-width: 600px; background-color: transparent; padding: 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+                <div class="text-content" style="text-align: center; color: white;">
+                    <h1>List a Space</h1>
+                </div>
+                <form class="new_space_form p-3" action="/space/new" method="POST" style="border-radius: 10px; outline: none;">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" name="name" class="form-control" id="name" required style="border-radius: 5px; outline: none;" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Address</label>
+                        <input type="text" name="address" class="form-control" id="address" required style="border-radius: 5px; outline: none;" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" name="description" id="description" rows="5" required style="border-radius: 5px; outline: none;"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="price" class="form-label">Price per night (£)</label>
+                        <input type="text" name="price" class="form-control" id="price" required style="border-radius: 5px; outline: none;" />
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary btn-lg" style="border-radius: 5px;">List my Space</button>
+                    </div>
+                </form>
             </div>
-            <div class="name-nspace label-input">
-                <label for="address">Address</label>
-                <input type="text" name="address" />
-            </div>
-            <div class="description-nspace label-input">
-                <label for="description">Description </label>
-                <textarea class="description" name="description" cols="30" rows="5"></textarea>
-            </div>
-            <div class="price-nspace label-input">
-                <label for="price">Price per night (£)</label>
-                <input type="text" name="price"/>
-            </div>
-            <div class="btn-nspace">
-                <button type="submit">List my Space</button>
-            </div>
-        </form>
+        </div>
 
     </main>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>        
 </body>
+<nav class="navbar fixed-bottom bg-light">
+    <div class="container-fluid ms-5 me-5">
+        <img src="/static/images/github.svg" class="github_logo" style="width: 40px; height: 40px;" alt="github logo">
+        <a class="nav-link" href="https://github.com/calummathen">calummathen</a>
+        <a class="nav-link" href="https://github.com/Jamiepod1">Jamiepod1</a>
+        <a class="nav-link" href="https://github.com/K-B13">K-B13</a>
+        <a class="nav-link" href="https://github.com/pat-shannon">pat-shannon</a>
+        <a class="nav-link" href="https://github.com/Shaker-H">Shaker-H</a>
+    </div>
+  </nav>
 </html>
