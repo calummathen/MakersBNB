@@ -1,4 +1,6 @@
 from lib.booking import Booking
+from lib.space_repository import SpaceRepository
+
 
 class BookingRepository():
     def __init__(self, connection):
@@ -16,6 +18,7 @@ class BookingRepository():
                                     result["user_id"],
                                     result["space_id"],
                                     result['owner_id'],
+                                    result["total_price"],
                                     result["approved"]) for result in results]
         return list_of_bookings
     
@@ -31,6 +34,7 @@ class BookingRepository():
                                     result["user_id"],
                                     result["space_id"],
                                     result['owner_id'],
+                                    result["total_price"],
                                     result["approved"]) for result in results]
         return list_of_bookings
     
@@ -46,12 +50,13 @@ class BookingRepository():
                                     result["user_id"],
                                     result["space_id"],
                                     result['owner_id'],
+                                    result["total_price"],
                                     result["approved"])
         return booking
     
     
     def create_booking(self, booking):
-        self.__connection.execute("INSERT INTO bookings (check_in, check_out, user_id, space_id, owner_id, approved) VALUES(%s, %s, %s, %s, %s, %s)", [booking.check_in, booking.check_out, booking.user_id, booking.space_id, booking.owner_id, booking.approved])
+        self.__connection.execute("INSERT INTO bookings (check_in, check_out, user_id, space_id, owner_id, total_price, approved) VALUES(%s, %s, %s, %s, %s, %s, %s)", [booking.check_in, booking.check_out, booking.user_id, booking.space_id, booking.owner_id, booking.total_price, booking.approved])
     
     
     def delete_booking(self, id):
