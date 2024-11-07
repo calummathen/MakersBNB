@@ -8,7 +8,7 @@ flatpickr("#inlineCalendar", {
     dateFormat: "Y-m-d",
     shorthandCurrentMonth: true,
     minDate: "today",
-    maxDate: new Date().fp_incr(60),
+    maxDate: new Date().fp_incr(180),
     disable: unavailableDates,
     mode: "range",
 

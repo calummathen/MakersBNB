@@ -30,6 +30,10 @@ app.secret_key = os.getenv('SECRET_KEY')
 def get_login_page():
     return render_template('login.html')
 
+@app.route('/1', methods=['GET'])
+def tester():
+    return render_template('tester.html')
+
 @app.route('/signup', methods=['GET'])
 def get_root():
     return render_template('signup.html',errors=[])
@@ -106,19 +110,18 @@ def create_booking(space_id):
 
     check_in = datetime.strptime(request.form.get('startDate'), "%Y-%m-%d").date()
     check_out = datetime.strptime(request.form.get('endDate'), "%Y-%m-%d").date()
-    user_id = 1
-
-    # print(check_in, check_out, user_id, space_id)
-
+    user_id = session["id"]
     connection = get_flask_database_connection(app)
-    new_booking = Booking(None, check_in, check_out, user_id, space_id)
-    # need to add user ID!!!!
+    repository = SpaceRepository(connection)
+    owner_id = repository.find(user_id).owner_id
+    connection = get_flask_database_connection(app)
+    new_booking = Booking(None, check_in, check_out, user_id, space_id, owner_id)
 
     booking_repository = BookingRepository(connection)
     if booking_repository.is_valid_booking(new_booking):
         booking_repository.create_booking(new_booking)
         flash("Booking successfully created!", "success") 
-        return redirect(url_for('display_single_space', id=space_id)) 
+        return redirect(url_for('profile')) 
     else:
         flash("Invalid booking: The selected dates are not available.", "error")  # Flash error message
         return redirect(url_for('display_single_space', id=space_id))  # Redirect
