@@ -2,6 +2,7 @@ from lib.user import *
 from werkzeug.security import check_password_hash, generate_password_hash
 from lib.space import Space
 from lib.booking import Booking
+from helper_functions import calculate_total_price
 
 class UserRepository:
     def __init__(self, connection):
@@ -121,7 +122,8 @@ class UserRepository:
                 bookings = []
                 space_ref = space['space_id']
             if space['bookings_space_id'] == space['space_id']:
-                booking = Booking(space['booking_id'], space['check_in'], space['check_out'], space['user_id'], space['bookings_space_id'], space['space_owner_id'], space['approved'])
+                total_price = calculate_total_price(space["price"], space["check_in"], space["check_out"])
+                booking = Booking(space['booking_id'], space['check_in'], space['check_out'], space['user_id'], space['bookings_space_id'], space['space_owner_id'], total_price, space['approved'])
                 bookings.append(booking)
             
         complete_space = Space(space['space_id'], space['space_name'], space['address'], space['description'], space['price'], space['dates_booked'], space['space_owner_id'], bookings)
