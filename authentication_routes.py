@@ -30,12 +30,14 @@ def auth_routes(app):
         user = repository.login(username, password)
         if not user:
             error = 'Incorrect Username or Password'
+
             return error
             # return render_template('login.html', error=error)
         if 'username' not in session or 'username' in session != username:
             session['id'] = user['id']
             session['username'] = user['username']
         return redirect('/home', code=200)
+
 
     @app.route('/logout')
     def logout():
