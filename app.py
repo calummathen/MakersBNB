@@ -27,8 +27,11 @@ app.secret_key = os.getenv('SECRET_KEY')
 # Try it:
 #   ; open http://localhost:5001/index
 @app.route('/', methods=['GET'])
-def get_login_page():
-    return render_template('login.html')
+def get_login_page(error=None):
+    if error == None:
+        return render_template('login.html')
+    else:
+        return render_template('login.html', error=error)
 
 @app.route('/signup', methods=['GET'])
 def get_root():

@@ -13,10 +13,10 @@
 
 <body>
     <ul>
-        <li style="float:left"><a>MakersBNB</a></li>
-        <li><a>Requests</a></li>
-        <li><a>Profile</a></li>
-        <li><a>Logout</a></li>
+            <li style="float:left"><a href="{{url_for('get_index')}}">MakersBNB</a></li>
+        <li><a>Requests</a href="{{url_for('booking_requests')}}"></li>
+        <li><a>Profile</a href="{{url_for('profile')}}"></li>
+        <li><a href="{{url_for('logout')}}">Logout</a></li>
     </ul>
     <div class="main">
     <h1>Book a Space</h1>
