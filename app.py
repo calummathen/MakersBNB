@@ -77,7 +77,6 @@ def change_profile():
     id = session['id']
     # Unfortunately need to do this to get the password
     user = repository.find_user(id)
-    print(user.password)
     repository.update_user(User(id, username, name, user.password, email, phone_number))
     return redirect(url_for('profile'))
 
