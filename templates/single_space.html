@@ -24,7 +24,7 @@
               </button>
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <div class="navbar-nav ms-auto">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    <a class="nav-link" href="/home">Home</a>
                     <a class="nav-link" href="{{url_for('booking_requests')}}">Requests</a>
                     <a class="nav-link" href="{{url_for('profile')}}">Profile</a>
                     <a class="nav-link" href="{{url_for('logout')}}">Logout</a>
@@ -89,6 +89,7 @@
                   <script> 
                   unavailableDatesString = '{{ unavailable_dates | tojson | safe }}';
                   const unavailableDates = JSON.parse(unavailableDatesString);
+                  const pricePerNight = '{{ space.price }}';
                   </script>
               
                   <script src="{{ url_for('static', filename='calendar.js') }}"></script>

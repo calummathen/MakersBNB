@@ -12,12 +12,25 @@
 </head>
 
 <body>
-    <ul>
-            <li style="float:left"><a href="{{url_for('get_index')}}">MakersBNB</a></li>
-        <li><a href="{{url_for('booking_requests')}}">Requests</a></li>
-        <li><a href="{{url_for('profile')}}">Profile</a></li>
-        <li><a href="{{url_for('logout')}}">Logout</a></li>
-    </ul>
+    <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/home" style="display: inline-flex; align-items: center;">
+            <img src="/static/house-door.svg" alt="Icon" style="width: 30px; height: 30px; margin-right: 8px;">
+            MakersBNB
+        </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/home">Home</a>
+                <a class="nav-link" href="{{url_for('booking_requests')}}">Requests</a>
+                <a class="nav-link" href="{{url_for('profile')}}">Profile</a>
+                <a class="nav-link" href="{{url_for('logout')}}">Logout</a>
+              </div>
+          </div>
+        </div>
+      </nav>
     <div class="main">
     <h1>Book a Space</h1>
     <p class="blessing">Website made possible thanks to our glorious leader Calum<br />ALL HAIL CALUM</p>
