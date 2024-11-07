@@ -11,7 +11,7 @@ from validation_methods import check_signup_valid
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
 import json
-from helper_functions import protect_route, calculate_total_price
+from helper_functions import protect_route, calculate_total_price, location_filter
 
 
 # Create a new Flask app
@@ -46,7 +46,10 @@ def get_index():
     connection = get_flask_database_connection(app)
     repository = SpaceRepository(connection)
     spaces = repository.all()
-    return render_template('home.html', spaces=spaces)
+    location = request.args.get("location", '')
+    if location != '':
+        spaces = location_filter(spaces, location)
+    return render_template('home.html', query=location, spaces=spaces)
 
 @app.route('/profile', methods=['GET'])
 def profile():

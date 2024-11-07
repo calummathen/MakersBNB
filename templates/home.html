@@ -52,6 +52,12 @@
                 <button>List Spaces</button>
             </form>
         </div>  -->
+        <form action="{{ url_for('get_index') }}" method="get">
+            <label for="query">Location:</label>
+            <input type="text" id="location_search" name="location" value={{ query }}>
+            <button type="submit">Search</button>
+        </form>
+
 
     <div>
         {% for space in spaces %}
