@@ -106,10 +106,16 @@ def display_single_space(id):
 
 @app.route('/space/create_booking/<int:space_id>', methods=['POST'])
 def create_booking(space_id):
-
+    # return f'{request.form.get('startDate')} and {request.form.get('endDate')}'
+    if request.form.get('startDate') == '' or request.form.get('endDate') == 'undefined':
+        flash("Please select a date range!", "error")
+        return redirect(url_for('display_single_space', id=space_id)) 
     connection = get_flask_database_connection(app)
     check_in = datetime.strptime(request.form.get('startDate'), "%Y-%m-%d").date()
     check_out = datetime.strptime(request.form.get('endDate'), "%Y-%m-%d").date()
+    print('test')
+    print(check_in)
+    print(check_out)
     user_id = session["id"]
     space_repository = SpaceRepository(connection)
     space = space_repository.find(space_id)
@@ -120,14 +126,14 @@ def create_booking(space_id):
 
 
     booking_repository = BookingRepository(connection)
+
     if booking_repository.is_valid_booking(new_booking):
         booking_repository.create_booking(new_booking)
-        flash("Booking successfully created!", "success") 
         return redirect(url_for('profile')) 
     else:
         flash("Invalid booking: The selected dates are not available.", "error")  # Flash error message
         return redirect(url_for('display_single_space', id=space_id))  # Redirect
-    
+
 
 
     
