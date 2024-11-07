@@ -166,7 +166,7 @@ def booking_requests():
     user_id = session['id']
     connection = get_flask_database_connection(app)
     booking_repository = BookingRepository(connection)
-    users_bookings = booking_repository.find_booking_for_user(user_id)
+    users_bookings = booking_repository.find_booking_for_user(user_id, False)
     space_repository = SpaceRepository(connection)
     user_repository = UserRepository(connection)
     
@@ -187,7 +187,7 @@ def booking_requests():
     owners_spaces = space_repository.all_for_owner(user_id)
     for space in owners_spaces:
         all_bookings_for_a_space = {}
-        bookings_for_space = booking_repository.find_booking_for_space(space.id)
+        bookings_for_space = booking_repository.find_booking_for_space(space.id, False)
 
         if bookings_for_space != []:
             all_required_info_for_all_bookings = []
