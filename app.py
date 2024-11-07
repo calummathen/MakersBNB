@@ -195,7 +195,7 @@ def booking_requests():
                 all_required_info_for_a_booking["username"] = user_for_this_booking.username
                 all_required_info_for_a_booking["user_id"] = user_for_this_booking.id
                 all_required_info_for_a_booking["check_in"] = booking.check_in
-                all_required_info_for_a_booking["check_out"] = booking.check_in
+                all_required_info_for_a_booking["check_out"] = booking.check_out
                 all_required_info_for_a_booking["approved"] = booking.approved
                 all_required_info_for_a_booking["booking_id"] = booking.booking_id
                 all_required_info_for_all_bookings.append(all_required_info_for_a_booking)        
