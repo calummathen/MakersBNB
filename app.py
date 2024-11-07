@@ -107,11 +107,17 @@ def display_single_space(id):
 @app.route('/space/create_booking/<int:space_id>', methods=['POST'])
 def create_booking(space_id):
 
+    connection = get_flask_database_connection(app)
     check_in = datetime.strptime(request.form.get('startDate'), "%Y-%m-%d").date()
     check_out = datetime.strptime(request.form.get('endDate'), "%Y-%m-%d").date()
     user_id = session["id"]
-    connection = get_flask_database_connection(app)
-    new_booking = Booking(None, check_in, check_out, user_id, space_id)
+    space_repository = SpaceRepository(connection)
+    space = space_repository.find(space_id)
+    price_per_night = space.price
+    total_price = calculate_total_price(price_per_night, check_in, check_out)
+    owner_id = space.owner_id
+    new_booking = Booking(None, check_in, check_out, user_id, space_id, owner_id, total_price)
+
 
     booking_repository = BookingRepository(connection)
     if booking_repository.is_valid_booking(new_booking):
