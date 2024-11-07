@@ -177,6 +177,7 @@ def booking_requests():
         booking_information["approved"] = booking.approved
         booking_information["space_name"] = space_repository.find(booking.space_id).name
         booking_information["booking_id"] = booking.booking_id
+        booking_information["total_price"] = f"{booking.total_price:.2f}"
         booking_information_list.append(booking_information)
     
     
@@ -198,6 +199,7 @@ def booking_requests():
                 all_required_info_for_a_booking["check_out"] = booking.check_out
                 all_required_info_for_a_booking["approved"] = booking.approved
                 all_required_info_for_a_booking["booking_id"] = booking.booking_id
+                all_required_info_for_a_booking["total_price"] = f"{booking.total_price:.2f}"
                 all_required_info_for_all_bookings.append(all_required_info_for_a_booking)        
             all_bookings_for_a_space[space_name] = all_required_info_for_all_bookings
             all_bookings_for_each_space_for_owner.append(all_bookings_for_a_space)
@@ -215,6 +217,7 @@ def owners_booking_request(request_id):
     user_repository = UserRepository(connection)
     username = user_repository.find_user(booking.user_id).username
     space_name = space_repository.find(booking.space_id).name
+    booking.total_price = f"{booking.total_price:.2f}"
     if space.owner_id != session['id']:
         return '', 403
     print(booking.booking_id)
@@ -230,6 +233,7 @@ def user_booking_request(request_id):
     user_repository = UserRepository(connection)
     username = user_repository.find_user(booking.user_id).username
     space_name = space_repository.find(booking.space_id).name
+    booking.total_price = f"{booking.total_price:.2f}"
     if booking.user_id != session['id']:
         return '', 403
     print(booking.booking_id)
