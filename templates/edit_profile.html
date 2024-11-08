@@ -1,22 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile</title>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
+
 <body>
-    <h3>Edit Profile</h3>
-    <form action="/profile/edit" method="POST" type="submit">
-        <label for="username"></label>
-        <input name="username" value='{{user.username}}' />
-        <label for="name"></label>
-        <input name="name" value='{{user.name}}' />
-        <label for="email"></label>
-        <input name="email" value='{{user.email}}' />
-        <label for="phone_number"></label>
-        <input name="phone_number" value='{{user.phone_number}}' />
-        <button>Update</button>
-    </form>
+    <div class="main">
+        <h3>Edit Profile</h3>
+        {%for error in errors%}
+        <p>{{error}}</p>
+        {% endfor %}
+        <form action="/profile/edit" method="POST" type="submit">
+            <div class="signup-field">
+                <label for="username">Username</label>
+                <input name="username" value='{{user.username}}'>
+            </div>
+            <div class="signup-field">
+                <label for="email">Email</label>
+                <input name="email" value='{{user.email}}'>
+            </div>
+            <div class="signup-field">
+                <label for="phone_number">Phone Number</label>
+                <input name="phone_number" value='{{user.phone_number}}'>
+            </div>
+            <div class="signup-field">
+                <label for="name">Name</label>
+                <input name="name" value='{{user.name}}'>
+            </div>
+
+
+            <button>Update</button>
+        </form>
+    </div>
 </body>
+
 </html>
