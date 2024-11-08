@@ -2,7 +2,7 @@ from flask import session, redirect, url_for
 
 def protect_route():
     if not session.get('id'):
-        return redirect(url_for('get_root'))
+        return redirect(url_for('get_login_page'))
     return None
 
 def calculate_total_price(price_per_night, check_in, check_out):

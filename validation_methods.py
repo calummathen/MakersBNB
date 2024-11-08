@@ -4,7 +4,7 @@ from flask import Flask
 app = Flask(__name__)
 
 def check_string_not_empty(entry):
-    if entry != "" and entry != None:
+    if entry != "" and entry != " " and entry != None:
         return True
     
 def check_there_are_no_spaces(entry):
@@ -14,7 +14,7 @@ def check_there_are_no_spaces(entry):
         return True
     
 def check_name_is_valid(entry):
-    if len(entry) > 0 and len(entry) <= 30 and entry != " " and check_string_not_empty(entry):
+    if len(entry) > 0 and len(entry) <= 30 and check_string_not_empty(entry):
         if any(char.isdigit() for char in entry):
             return "Name must not contain numbers."
         return True
@@ -74,34 +74,44 @@ def check_signup_valid(name, email, phone_number, username, password):
     errors.append(check_password_is_valid(password))
     return errors
 
-# def check_updated_username_valid(entry, original_username):
-#     connection = get_flask_database_connection(app)
-#     repository = UserRepository(connection)
-#     username_unique = True
-#     for username_email_pair in repository.get_usernames_emails():
-#         if username_email_pair['username'] == entry and entry != original_username:
-#             username_unique = False 
-#     if len(entry) > 2 and len(entry)<= 17 and check_string_not_empty(entry) and check_there_are_no_spaces(entry) and username_unique:
-#         return True
-#     else:
-#         return "Username must be unique and 2-17 characters long with no spaces."
-    
-# def check_updated_email_valid(entry, original_email):
-#     connection = get_flask_database_connection(app)
-#     repository = UserRepository(connection)
-#     email_unique = True
-#     for username_email_pair in repository.get_usernames_emails():
-#         if username_email_pair['email'] == entry and entry != original_email:
-#             email_unique = False 
-#     if "." in entry and "@" in entry and len(entry) > 5 and len(entry)<= 255 and check_string_not_empty(entry) and check_there_are_no_spaces(entry) and email_unique:
-#         return True
-#     else:
-#         return "Email must be unique with 5-255 characters and include a domain."
-
 def check_profile_update_valid(username, email, phone_number, name, original_username, original_email):
     errors = []
     errors.append(check_username_is_valid(username,original_username))
     errors.append(check_email_is_valid(email,original_email))
     errors.append(check_phone_number_is_valid(phone_number))
     errors.append(check_name_is_valid(name))
+    return errors
+
+# Space related validation:
+def check_space_name_is_valid(entry):
+    if len(entry) >=3 and len(entry) <=30 and check_string_not_empty:
+        return True
+    else:
+        return 'Space name must be 3-30 characters.'
+    
+def check_address_is_valid(entry):
+    if len(entry) >=8 and len(entry) <=255 and check_string_not_empty:
+        return True
+    else:
+        return 'Address must be 8-255 characters.'
+    
+def check_description_is_valid(entry):
+    if len(entry) >=8 and len(entry) <=255 and check_string_not_empty:
+        return True
+    else:
+        return 'Description must be 8-255 characters.'
+
+def check_price_is_valid(entry):
+    try:
+        float(entry)
+        return True
+    except ValueError:
+        return 'Price must be a float'
+
+def check_space_creation_valid(name,address,description,price):
+    errors =[]
+    errors.append(check_space_name_is_valid(name))
+    errors.append(check_address_is_valid(address))
+    errors.append(check_description_is_valid(description))
+    errors.append(check_price_is_valid(price))
     return errors
