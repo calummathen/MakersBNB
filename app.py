@@ -1,10 +1,11 @@
 import os
-from flask import Flask, render_template
+from flask import Flask, request, render_template, session, redirect, url_for
 from lib.database_connection import get_flask_database_connection
 from lib.space_repository import SpaceRepository
+# from routes.authentication_routes import auth_routes
 
 from dotenv import load_dotenv
-# from routes.routes import *
+from routes.routes import *
 from lib.space import Space
 from lib.user import User
 from lib.user_repository import UserRepository
@@ -82,8 +83,7 @@ def change_profile():
         session['username'] = username
         return redirect(url_for('profile'))
 
-from authentication_routes import auth_routes
-auth_routes(app)
+
 
 
 @app.route('/space/<int:id>', methods=['GET'])
