@@ -99,4 +99,6 @@ li a:hover {
     position: relative; /* Ensure positioning context for the overlay */
   }
 
-  
+  .custom-navbar {
+    height:60px; 
+}
