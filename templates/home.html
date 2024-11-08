@@ -57,6 +57,7 @@
                 <button>List Spaces</button>
             </form>
         </div>  -->
+
         
         <div class="row g-4 mb-5">
             {% for space in spaces %}
@@ -77,6 +78,12 @@
                 </div>
             </div>
             {% endfor %}
+
+        <form action="{{ url_for('get_index') }}" method="get">
+            <label for="query">Location:</label>
+            <input type="text" id="location_search" name="location" value={{ query }}>
+            <button type="submit">Search</button>
+        </form>
         </div>
         
         <!-- <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
