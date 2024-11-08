@@ -2,9 +2,21 @@ from lib.database_connection import get_flask_database_connection
 from flask import request, render_template, session, redirect, url_for
 from lib.user import User
 from lib.user_repository import UserRepository
-from validation_methods import check_email_is_valid, check_signup_valid
+from validation_methods import check_signup_valid
 
 def auth_routes(app):
+
+    @app.route('/', methods=['GET'])
+    def get_login_page(error=None):
+        if error == None:
+            return render_template('login.html')
+        else:
+            return render_template('login.html', error=error)
+
+    @app.route('/signup', methods=['GET'])
+    def get_root():
+        return render_template('signup.html',errors=[])
+
     @app.route('/signup', methods=['POST'])
     def sign_up():
         name = request.form.get('name')

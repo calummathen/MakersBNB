@@ -1,7 +1,10 @@
 import os
-from flask import Flask, request, render_template, session, redirect, url_for, flash
+from flask import Flask, render_template
 from lib.database_connection import get_flask_database_connection
 from lib.space_repository import SpaceRepository
+
+from dotenv import load_dotenv
+# from routes.routes import *
 from lib.space import Space
 from lib.user import User
 from lib.user_repository import UserRepository
@@ -21,24 +24,6 @@ app = Flask(__name__)
 load_dotenv()
 app.secret_key = os.getenv('SECRET_KEY')
 
-# == Your Routes Here ==
-
-# GET /index
-# Returns the homepage
-# Try it:
-#   ; open http://localhost:5001/index
-@app.route('/', methods=['GET'])
-def get_login_page(error=None):
-    if error == None:
-        return render_template('login.html')
-    else:
-        return render_template('login.html', error=error)
-
-
-@app.route('/signup', methods=['GET'])
-def get_root():
-    return render_template('signup.html',errors=[])
-
 @app.route('/home', methods=['GET'])
 def get_index():
     logged_in = protect_route()
@@ -51,6 +36,13 @@ def get_index():
     if location != '':
         spaces = location_filter(spaces, location)
     return render_template('home.html', query=location, spaces=spaces)
+
+
+# auth_routes(app)
+# single_space_routes(app)
+# new_spaces_routes(app)
+# profile_pages_routes(app)
+# request_routes(app)
 
 @app.route('/profile', methods=['GET'])
 def profile():
@@ -283,6 +275,7 @@ def cancel_booking():
     booking_id = request.form["booking_id"]
     booking_repository.delete_booking(booking_id)
     return redirect(url_for('booking_requests'))
+
 
 # These lines start the server if you run this file directly
 # They also start the server configured to use the test database
