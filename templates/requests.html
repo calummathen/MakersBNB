@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Requests</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/style.css">
     <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 </head>
 <body>
+
     <nav class="navbar navbar-expand-lg bg-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="/home" style="display: inline-flex; align-items: center;">
@@ -28,64 +30,77 @@
         </div>
     </nav>
 
-    <!-- Toggle Button -->
-    <div class="container text-center my-4">
-        <button id="toggleButton" class="btn btn-primary" onclick="toggleView()">Show Bookings for Your Properties</button>
-    </div>
+    <div class="main" style="position: relative; width: 100%; background-image: url('/static/images/requests_background.webp'); background-size: cover; background-position: center; opacity: 0.75; display: flex; justify-content: center; align-items: center; min-height: 100vh;">
+        <div class="card-img-overlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5);"></div>
 
-    <!-- Your Bookings Section -->
-    <div id="yourBookings" class="container">
-        <h1 class="mb-4">Your Booking Requests:</h1>
-        {% if booking_information_list != [] %}
-            {% for booking_information in booking_information_list %}
-                <div class="card mb-3 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            <a href="{{ url_for('user_booking_request', request_id=booking_information['booking_id']) }}">Go to this booking</a>
-                        </h5>
-                        <p class="card-text">Check-in: <span class="text-muted">{{ booking_information["check_in"] }}</span></p>
-                        <p class="card-text">Check-out: <span class="text-muted">{{ booking_information["check_out"] }}</span></p>
-                        <p class="card-text">Space name: <span class="text-muted">{{ booking_information["space_name"] }}</span></p>
-                        <p class="card-text">Total price: <span class="text-muted">£{{ booking_information["total_price"] }}</span></p>
-                    </div>
-                </div>
-            {% endfor %}
-        {% else %}
-            <h2>No requests to display</h2>
-        {% endif %}
-    </div>
+        <div class="container text-center" style="position: relative; z-index: 2;">
+            <h1 class="text-white mb-4">Your Booking Requests</h1>
 
-    <!-- Bookings for Your Properties Section -->
-    <div id="propertyBookings" class="container" style="display: none;">
-        <h1 class="mb-4">Booking Requests for Your Properties:</h1>
-        {% if all_bookings_for_each_space_for_owner != [] %}
-            {% for bookings_for_space in all_bookings_for_each_space_for_owner %}
-                {% for space_name, bookings in bookings_for_space.items() %}
-                    <h2>Space name: {{ space_name }}</h2>
-                    <hr/>
-                    {% for booking in bookings %}
+            <button id="toggleButton" class="btn btn-primary mb-4" onclick="toggleView()">Show Bookings for Your Properties</button>
+
+            <!-- Your Bookings Section -->
+            <div id="yourBookings" class="container" style="display: block;">
+                {% if booking_information_list != [] %}
+                    {% for booking_information in booking_information_list %}
                         <div class="card mb-3 shadow-sm">
                             <div class="card-body">
                                 <h5 class="card-title">
-                                    <a href="{{ url_for('owners_booking_request', request_id=booking.booking_id) }}">Go to this booking</a>
+                                    <a href="{{ url_for('user_booking_request', request_id=booking_information['booking_id']) }}">Go to this booking</a>
                                 </h5>
-                                <p class="card-text">Check-in: <span class="text-muted">{{ booking["check_in"] }}</span></p>
-                                <p class="card-text">Check-out: <span class="text-muted">{{ booking["check_out"] }}</span></p>
-                                <p class="card-text">User: <span class="text-muted">{{ booking["username"] }}</span></p>
-                                <p class="card-text">Total price: <span class="text-muted">£{{ booking["total_price"] }}</span></p>
+                                <p class="card-text">Check-in: <span class="text-muted">{{ booking_information["check_in"] }}</span></p>
+                                <p class="card-text">Check-out: <span class="text-muted">{{ booking_information["check_out"] }}</span></p>
+                                <p class="card-text">Space name: <span class="text-muted">{{ booking_information["space_name"] }}</span></p>
+                                <p class="card-text">Total price: <span class="text-muted">£{{ booking_information["total_price"] }}</span></p>
                             </div>
                         </div>
                     {% endfor %}
-                {% endfor %}
-            {% endfor %}
-        {% else %}
-            <h2>No requests to display</h2>
-        {% endif %}
+                {% else %}
+                    <h2 class="text-white">No requests to display</h2>
+                {% endif %}
+            </div>
+
+            <!-- Bookings for Your Properties Section -->
+            <div id="propertyBookings" class="container" style="display: none;">
+                {% if all_bookings_for_each_space_for_owner != [] %}
+                    {% for bookings_for_space in all_bookings_for_each_space_for_owner %}
+                        {% for space_name, bookings in bookings_for_space.items() %}
+                            <h2 class="text-white">Space name: {{ space_name }}</h2>
+                            <hr />
+                            {% for booking in bookings %}
+                                <div class="card mb-3 shadow-sm">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <a href="{{ url_for('owners_booking_request', request_id=booking.booking_id) }}">Go to this booking</a>
+                                        </h5>
+                                        <p class="card-text">Check-in: <span class="text-muted">{{ booking["check_in"] }}</span></p>
+                                        <p class="card-text">Check-out: <span class="text-muted">{{ booking["check_out"] }}</span></p>
+                                        <p class="card-text">User: <span class="text-muted">{{ booking["username"] }}</span></p>
+                                        <p class="card-text">Total price: <span class="text-muted">£{{ booking["total_price"] }}</span></p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                    {% endfor %}
+                {% else %}
+                    <h2 class="text-white">No requests to display</h2>
+                {% endif %}
+            </div>
+        </div>
     </div>
 
-    <!-- Bootstrap and JavaScript for Toggling -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script> 
+    <!-- Footer -->
+    <nav class="navbar fixed-bottom bg-light custom-navbar">
+        <div class="container-fluid ms-5 me-5">
+            <img src="/static/images/github.svg" class="github_logo" style="width: 40px; height: 40px;" alt="github logo">
+            <a class="nav-link" href="https://github.com/calummathen">calummathen</a>
+            <a class="nav-link" href="https://github.com/Jamiepod1">Jamiepod1</a>
+            <a class="nav-link" href="https://github.com/K-B13">K-B13</a>
+            <a class="nav-link" href="https://github.com/pat-shannon">pat-shannon</a>
+            <a class="nav-link" href="https://github.com/Shaker-H">Shaker-H</a>
+        </div>
+    </nav>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
     <script>
         function toggleView() {
             const yourBookings = document.getElementById('yourBookings');
@@ -105,14 +120,4 @@
         }
     </script>
 </body>
-<nav class="navbar fixed-bottom bg-light custom-navbar">
-    <div class="container-fluid ms-5 me-5">
-        <img src="/static/images/github.svg" class="github_logo" style="width: 40px; height: 40px;" alt="github logo">
-        <a class="nav-link" href="https://github.com/calummathen">calummathen</a>
-        <a class="nav-link" href="https://github.com/Jamiepod1">Jamiepod1</a>
-        <a class="nav-link" href="https://github.com/K-B13">K-B13</a>
-        <a class="nav-link" href="https://github.com/pat-shannon">pat-shannon</a>
-        <a class="nav-link" href="https://github.com/Shaker-H">Shaker-H</a>
-    </div>
-  </nav>
 </html>
