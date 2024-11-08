@@ -29,7 +29,6 @@ flatpickr("#inlineCalendar", {
         document.getElementById("endDate").value = endDate; 
         const start = new Date(startDate);
         const end = new Date(endDate);
-        // Calculate the difference in milliseconds
         
         const differenceInTime = end.getTime() - start.getTime();
         let totalPrice = 0;
@@ -39,10 +38,6 @@ flatpickr("#inlineCalendar", {
             totalPrice = differenceInDays * pricePerNight
         }
         
-        // Convert the difference from milliseconds to days
-        
-        // Now you can use differenceInDays as an integer
-        // console.log("Number of days: " + differenceInDays);
         document.getElementById("totalDays").textContent = "Number of days: " + differenceInDays;
         document.getElementById("totalDays").textContent = "Total price: £" + totalPrice + " for " + differenceInDays + " nights";
         // document.getElementById("selectedDates").textContent = "Selected Date: " + dateStr;

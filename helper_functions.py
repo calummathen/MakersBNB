@@ -9,3 +9,18 @@ def calculate_total_price(price_per_night, check_in, check_out):
     delta = check_out - check_in
     days_between = delta.days
     return price_per_night * days_between
+
+
+def location_filter(spaces, location):
+    filtered_spaces = []
+    location = location.lower()
+    print(location)
+
+    for space in spaces:
+        print(space.address)
+        address = space.address
+        address_lines = address.split()
+        for line in address_lines:
+            if location in line.lower():
+                filtered_spaces.append(space)
+    return filtered_spaces
