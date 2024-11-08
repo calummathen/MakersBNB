@@ -40,7 +40,7 @@ def check_password_is_valid(entry):
     if has_letter and has_number and len(entry) > 7 and len(entry)<= 255 and check_string_not_empty(entry) and check_there_are_no_spaces(entry):
         return True
     else:
-        return "Password must be 8-255 characters with atleast one letter and number."
+        return "Password must be 8-255 characters with at least one letter and number."
 
 def check_phone_number_is_valid(entry):
     has_number = any(char.isdigit() for char in entry)

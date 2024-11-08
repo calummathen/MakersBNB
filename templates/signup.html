@@ -31,7 +31,7 @@
                 <div class="text-content" style="text-align: center; color: white;">
                     <h1>Sign Up</h1>
                     {% for error in errors %}
-                        <p style="color: white;">{{ error }}</p>
+                        <p class="error-message" style="color: white;">{{ error }}</p>
                     {% endfor %}
                 </div>
                 <form action="/signup" method="post" style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; max-width: 400px; margin: 0 auto;">
