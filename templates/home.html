@@ -31,21 +31,22 @@
         </div>
       </nav>
 
-    <div class="main">
-        
-        <div class="text-container" style="position: relative; width: 100%; height: 600px; background-image: url('/static/images/homepage_background.webp'); background-size: cover; background-position: center; opacity: 0.75; display: flex; justify-content: center; align-items: center;">
-            <div class="text-content" style="text-align: center; color: white;">
+      <div class="main">
+        <div class="text-container" style="position: relative; width: 100%; height: 600px; background-image: url('/static/images/homepage_background.webp'); background-size: cover; background-position: center; opacity: 0.75;">
+            <img src="/static/images/homepage_background.webp" alt="Background" style="width: 100%; height: 100%; object-fit: cover;">
+            <div class="card-img-overlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5);"></div>
+            <div class="text-content" style="position: absolute; text-align: center; color: white; z-index: 1; width: 100%; padding: 0 20px; top: 50%; transform: translateY(-50%);">
                 <h1>Home Is Everywhere</h1>
-                <p class="blessing">Discover your perfect stay, anywhere in the world. </p>
-                <form action="/space/new">
-                    <button type="submit" class="btn btn-primary" style="position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);">List a property</a>
-                </form>
+                <p class="blessing">Discover your perfect stay, anywhere in the world.</p>
             </div>
+            <form action="/space/new" style="position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 1;">
+                <button type="submit" class="btn btn-primary">List a property</button>
+            </form>
         </div>
+    </div>
         
         
-        <div class="main-content mt-5"> <!-- mt-5 adds margin-top (Bootstrap utility) -->
-            <!-- Centered search form -->
+        <div class="main-content mt-5">
             <div class="container text-center mb-4">
                 <form action="{{ url_for('get_index') }}" method="get" style="max-width: 600px; margin: 0 auto;">
                     <div class="mb-3">
@@ -56,31 +57,22 @@
                 </form>
             </div>
         
+            <div class="container">
+                <div class="row g-4 mb-5">
+                    {% for space in spaces %}
+                    <div class="col-md-4"> 
+                        <div class="card text-bg-light">
+                            <img src="/static/images/spaces/{{space.id}}.png" class="card-img" onerror="this.onerror=null; this.src='/static/images/big_hotel.webp'" alt="Image for {{ space.name }}">
 
-        <div class="row g-4 mb-5">
-            {% for space in spaces %}
-            <div class="col-4">
-                <!-- Card with image background and overlay -->
-                <div class="card text-bg-light m-5">
-                    <img src="/static/images/spaces/{{space.id}}.png" class="card-img" onerror="this.onerror=null; this.src='/static/images/big_hotel.webp'" alt="Image for {{ space.name }}">
-                    
-                    <!-- Card Overlay with Text -->
-                    <div class="card-img-overlay">
-                        <h5 class="card-title">{{ space.name }}</h5>
-                        <p class="blessing">{{ space.description }}</p>
-                        
-                        
-                        <!-- Card Overlay with Text -->
-                        <div class="card-img-overlay">
-                            <h5 class="card-title">{{ space.name }}</h5>
-                            <p class="blessing">{{ space.description }}</p>
-                            
-                            <!-- Button below text -->
-                            <a href="{{ url_for('display_single_space', id=space.id) }}" class="btn btn-primary mt-3">Book Now</a>
+                            <div class="card-img-overlay" style="background-color: rgba(0, 0, 0, 0.5);">
+                                <h5 class="card-title">{{ space.name }}</h5>
+                                <p class="blessing">{{ space.address.split()[-1] }}</p>
+                                <a href="{{ url_for('display_single_space', id=space.id) }}" class="btn btn-primary mt-3">Book Now</a>
+                            </div>
                         </div>
                     </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
             </div>
         </div>
         
