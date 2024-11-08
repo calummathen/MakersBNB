@@ -56,13 +56,19 @@
                 </form>
             </div>
         
-            <!-- Card content -->
-            <div class="row g-4">
-                {% for space in spaces %}
-                <div class="col-4">
-                    <!-- Card with image background and overlay -->
-                    <div class="card text-bg-light m-5">
-                        <img src="/static/images/placeholder.png" class="card-img" alt="Image for {{ space.name }}">
+
+        <div class="row g-4 mb-5">
+            {% for space in spaces %}
+            <div class="col-4">
+                <!-- Card with image background and overlay -->
+                <div class="card text-bg-light m-5">
+                    <img src="/static/images/spaces/{{space.id}}.png" class="card-img" onerror="this.onerror=null; this.src='/static/images/big_hotel.webp'" alt="Image for {{ space.name }}">
+                    
+                    <!-- Card Overlay with Text -->
+                    <div class="card-img-overlay">
+                        <h5 class="card-title">{{ space.name }}</h5>
+                        <p class="blessing">{{ space.description }}</p>
+                        
                         
                         <!-- Card Overlay with Text -->
                         <div class="card-img-overlay">
