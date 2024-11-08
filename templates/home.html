@@ -62,14 +62,15 @@
                     {% for space in spaces %}
                     <div class="col-md-4"> 
                         <div class="card text-bg-light">
-                            <img src="/static/images/spaces/{{space.id}}.png" class="card-img" onerror="this.onerror=null; this.src='/static/images/big_hotel.webp'" alt="Image for {{ space.name }}">
-
+<!--                             <img src="/static/images/spaces/{{space.id}}.png" class="card-img" onerror="this.onerror=null; this.src='/static/images/big_hotel.webp'" alt="Image for {{ space.name }}"> -->
+                            <img src="/static/images/spaces/{{space.id}}.webp" width=592px height=393px class="card-img" onerror="this.onerror=null; this.src='/static/images/big_hotel.webp'" alt="Image for {{ space.name }}">
                             <div class="card-img-overlay" style="background-color: rgba(0, 0, 0, 0.5);">
                                 <h5 class="card-title">{{ space.name }}</h5>
                                 <p class="blessing">{{ space.address.split()[-1] }}</p>
                                 <a href="{{ url_for('display_single_space', id=space.id) }}" class="btn btn-primary mt-3">Book Now</a>
                             </div>
                         </div>
+
                     </div>
                     {% endfor %}
                 </div>
