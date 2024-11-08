@@ -35,7 +35,11 @@
             <div class="form-container" style="position: relative; z-index: 1; width: 100%; max-width: 600px; background-color: transparent; padding: 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
                 <div class="text-content" style="text-align: center; color: white;">
                     <h1>List a Space</h1>
+                    {%for error in errors%}
+                <p>{{error}}</p>
+                {% endfor %}
                 </div>
+                
                 <form class="new_space_form p-3" action="/space/new" method="POST" style="border-radius: 10px; outline: none;">
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
