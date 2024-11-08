@@ -21,12 +21,13 @@ def check_name_is_valid(entry):
     else:
         return "Name must be 1-30 characters and not empty."
     
-def check_username_is_valid(entry):
+def check_username_is_valid(entry, original_username=None):
     connection = get_flask_database_connection(app)
     repository = UserRepository(connection)
     username_unique = True
     for username_email_pair in repository.get_usernames_emails():
-        if username_email_pair['username'] == entry:
+        print(f'checking if{original_username} = {entry}')
+        if username_email_pair['username'] == entry and original_username!=entry:
             username_unique = False 
     if len(entry) > 2 and len(entry)<= 17 and check_string_not_empty(entry) and check_there_are_no_spaces(entry) and username_unique:
         return True
@@ -52,12 +53,12 @@ def check_phone_number_is_valid(entry):
     else:
         return "Phone number must be 10-11 digits with no spaces."
 
-def check_email_is_valid(entry):
+def check_email_is_valid(entry, original_email=None):
     connection = get_flask_database_connection(app)
     repository = UserRepository(connection)
     email_unique = True
     for username_email_pair in repository.get_usernames_emails():
-        if username_email_pair['email'] == entry:
+        if username_email_pair['email'] == entry and original_email !=entry:
             email_unique = False 
     if "." in entry and "@" in entry and len(entry) > 5 and len(entry)<= 255 and check_string_not_empty(entry) and check_there_are_no_spaces(entry) and email_unique:
         return True
@@ -71,4 +72,36 @@ def check_signup_valid(name, email, phone_number, username, password):
     errors.append(check_phone_number_is_valid(phone_number))
     errors.append(check_username_is_valid(username))
     errors.append(check_password_is_valid(password))
+    return errors
+
+# def check_updated_username_valid(entry, original_username):
+#     connection = get_flask_database_connection(app)
+#     repository = UserRepository(connection)
+#     username_unique = True
+#     for username_email_pair in repository.get_usernames_emails():
+#         if username_email_pair['username'] == entry and entry != original_username:
+#             username_unique = False 
+#     if len(entry) > 2 and len(entry)<= 17 and check_string_not_empty(entry) and check_there_are_no_spaces(entry) and username_unique:
+#         return True
+#     else:
+#         return "Username must be unique and 2-17 characters long with no spaces."
+    
+# def check_updated_email_valid(entry, original_email):
+#     connection = get_flask_database_connection(app)
+#     repository = UserRepository(connection)
+#     email_unique = True
+#     for username_email_pair in repository.get_usernames_emails():
+#         if username_email_pair['email'] == entry and entry != original_email:
+#             email_unique = False 
+#     if "." in entry and "@" in entry and len(entry) > 5 and len(entry)<= 255 and check_string_not_empty(entry) and check_there_are_no_spaces(entry) and email_unique:
+#         return True
+#     else:
+#         return "Email must be unique with 5-255 characters and include a domain."
+
+def check_profile_update_valid(username, email, phone_number, name, original_username, original_email):
+    errors = []
+    errors.append(check_username_is_valid(username,original_username))
+    errors.append(check_email_is_valid(email,original_email))
+    errors.append(check_phone_number_is_valid(phone_number))
+    errors.append(check_name_is_valid(name))
     return errors

@@ -8,6 +8,7 @@ from lib.user_repository import UserRepository
 from lib.booking import Booking
 from lib.booking_repository import BookingRepository
 from validation_methods import check_signup_valid
+from validation_methods import check_profile_update_valid
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
 import json
@@ -78,10 +79,16 @@ def change_profile():
     email = request.form['email']
     phone_number = request.form['phone_number']
     id = session['id']
+    user = repository.find_user(id)
+    errors = [error for error in check_profile_update_valid(username, email, phone_number, name, user.username, user.email) if error != True]
     # Unfortunately need to do this to get the password
     user = repository.find_user(id)
-    repository.update_user(User(id, username, name, user.password, email, phone_number))
-    return redirect(url_for('profile'))
+    if len(errors) != 0:
+        return render_template('edit_profile.html', user=user, errors=errors)
+    else:
+        repository.update_user(User(id, username, name, user.password, email, phone_number))
+        session['username'] = username
+        return redirect(url_for('profile'))
 
 from authentication_routes import auth_routes
 auth_routes(app)
@@ -157,6 +164,7 @@ def create_new_space():
     description = request.form['description']
     price = request.form['price']
     id = session['id']
+    
     space = Space(None, name, address, description, price, '[]', id)
     space_repository.create(space)
     return redirect(url_for('profile'))
