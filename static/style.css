@@ -83,3 +83,22 @@ li a:hover {
     0% {background-color:#2b2b2b; box-shadow: 0px 0px 00px #a70000;}
     100% {background-color:#a70000; box-shadow: 0px 4px 10px #a70000;}
 }
+
+.price-overlay {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 1.2rem;
+}
+  
+  .carousel-item {
+    position: relative; /* Ensure positioning context for the overlay */
+  }
+
+  .custom-navbar {
+    height:60px; 
+}

@@ -1,0 +1,14 @@
+* .new_space_form {
+    background-color: #f8f9fa; /* Light background similar to the card */
+    max-width: 600px; /* Limit the form width */
+    margin: 20px auto; /* Center the form */
+}
+
+.new_space_form .form-control {
+    border-radius: 0.375rem; /* Rounded input fields */
+    padding: 10px; /* Add padding to inputs */
+}
+
+.new_space_form button {
+    padding: 12px 24px; /* Larger padding for the button */
+} 
