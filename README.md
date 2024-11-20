@@ -1,14 +1,33 @@
-# MakersBnB Python Project Seed
+# MakersBnB Python Project
 
-This repo contains the seed codebase for the MakersBnB project in Python (using 
-Flask and Pytest).
+This web application allows users to list available spaces and book them for overnight stays of various lengths. It was developed as a group project using Python, Flask, HTML, CSS, and JavaScript, providing a robust platform for listing and hiring spaces with customisable availability and booking management.
 
-Someone in your team should fork this seed repo to their GitHub account.
-Everyone in the team should then clone this fork to their local machine to work on it.
+## Features
 
-> NOTE: If you encounter a `ModuleNotFound` error, deactivate and then reactivate your virtual env. If that doesn't help, please reach out to your coach.
+### Core Functionality
 
-## Setup
+User Signup & Authentication: Users can sign up, log in, and manage their profiles.
+Listing Spaces: Any signed-up user can:
+* List multiple spaces with a name, short description, and price per night.
+* Manage their profile and update information
+Booking Requests: Users can:
+* Request to book a listed space for any available nights.
+* Approve or deny booking requests for their spaces.
+* Booked nights are automatically blocked to prevent double bookings.
+
+### Real-Time Booking Management
+
+* Availability Control: Spaces remain bookable until a booking request is confirmed.
+* Booking Approvals: Space owners must approve booking requests before the booking is finalized.
+
+### Technology Stack
+
+* Backend: Python, Flask
+* Frontend: HTML, CSS, JavaScript
+* Database: PostgreSQL 
+
+
+### Installation and Setup
 
 ```shell
 # Set up the virtual environment
@@ -20,11 +39,7 @@ Everyone in the team should then clone this fork to their local machine to work 
 # Install dependencies
 (makersbnb-venv); pip install -r requirements.txt
 
-# Install the virtual browser we will use for testing
-(makersbnb-venv); playwright install
-# If you have problems with the above, contact your coach
-
-# Create a test and development database
+# Create a test and development PostgreSQL database
 (makersbnb-venv); createdb YOUR_PROJECT_NAME
 (makersbnb-venv); createdb YOUR_PROJECT_NAME_TEST
 
